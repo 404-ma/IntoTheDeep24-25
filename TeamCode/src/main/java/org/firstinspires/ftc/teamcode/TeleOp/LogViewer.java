@@ -1,10 +1,14 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
+import android.util.Log;
+
 import com.acmerobotics.dashboard.config.Config;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
+import org.firstinspires.ftc.teamcode.Helper.GamePad;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -22,7 +26,7 @@ import java.util.List;
 
 @Config
 @TeleOp(name = "LogViewer", group = "TeleOp")
-public class LogViewer extends OpMode {
+public class LogViewer extends LinearOpMode{
 
     public static String url = "";
 
@@ -30,22 +34,52 @@ public class LogViewer extends OpMode {
 
     public static String type = "customFile";
 
-    public void loop() {
+    private final GamePad gpInput = new GamePad(gamepad1, false);
 
+    public void runOpMode () {
+        waitForStart();
+        if (isStopRequested()) return;
+
+        telemetry.clear();
+
+        telemetry.addLine("A - many files, B - custom file, X - Browse Files");
+        telemetry.update();
+
+        while (opModeIsActive()) {
+            GamePad.GameplayInputType inputType = gpInput.WaitForGamepadInput(30);
+            switch (inputType) {
+                case BUTTON_A:
+                    LogViewer.type = "manyFiles";
+                    this.runLogView();
+                    break;
+                case BUTTON_B:
+                    LogViewer.type = "customFile";
+                    this.runLogView();
+                    break;
+                case BUTTON_X:
+                    LogViewer.type = "browse";
+                    this.runLogView();
+                    break;
+            }
+        }
     }
 
-    public void init () {
-        telemetry.clear();
+    private void runLogView() {
         String directoryPath = "RoadRunner/logs";
         File directory = new File(AppUtil.ROOT_FOLDER, directoryPath);
 
         try {
             tryUploadingBrowseFiles(getLogFiles(directoryPath));
         } catch (Exception e) {
+            telemetry.addLine(e.toString());
+            telemetry.update();
             e.printStackTrace();
+            return;
         }
 
         if (type.equals("browse")) {
+            telemetry.addLine("File Browser Cache Updated");
+            telemetry.update();
             return;
         }
 
@@ -60,31 +94,52 @@ public class LogViewer extends OpMode {
 
                 if (file != null) {
                     boolean success = uploadFile(file, LogViewer.url+"upload");
+                    if (success) {
+                        telemetry.addLine("\nSuccessfully uploaded file: "+file.getName());
+                    } else  {
+                        telemetry.addLine("\nFile Upload Failed: "+file.getName());
+                    }
                 }
 
             } catch (Exception e) {
+                telemetry.addLine(e.toString());
+                telemetry.update();
                 e.printStackTrace();
+                return;
             }
+
+            telemetry.update();
+            return;
         }
 
         if (directory.exists() && directory.isDirectory()) {
-
             if (fileGet == 1) {
                 File latestLogFile = getLatestLogFile(directory);
                 if (latestLogFile != null) {
-
                     boolean success = uploadFile(latestLogFile, url+"upload");
+                    if (success) {
+                        telemetry.addLine("\nSuccessfully uploaded file: "+latestLogFile.getName());
+                    } else  {
+                        telemetry.addLine("\nFile Upload Failed: "+latestLogFile.getName());
+                    }
                 }
             } else {
                 File[] files = getFiles(directory);
                 for (File latestLogFile : files) {
                     if (latestLogFile != null) {
-
                         boolean success = uploadFile(latestLogFile, url+"upload");
+                        if (success) {
+                            telemetry.addLine("\nSuccessfully uploaded file: "+latestLogFile.getName());
+                        } else  {
+                            telemetry.addLine("\nFile Upload Failed: "+latestLogFile.getName());
+                        }
                     }
                 }
             }
         }
+
+        telemetry.update();
+        return;
     }
 
     public static String getFileName() throws Exception {
@@ -107,7 +162,6 @@ public class LogViewer extends OpMode {
                 return response.toString();
             }
         } else {
-//            System.out.println("Error: Failed to fetch file name, Response Code: " + responseCode);
             return null;
         }
     }
@@ -146,9 +200,7 @@ public class LogViewer extends OpMode {
 
         int responseCode = connection.getResponseCode();
         if (responseCode == HttpURLConnection.HTTP_OK) {
-//            System.out.println("Success: Log files sent");
         } else {
-//            System.out.println("Error: Failed to send log files, Response Code: " + responseCode);
         }
     }
 
@@ -228,7 +280,7 @@ public class LogViewer extends OpMode {
     }
 
     private File[] getFiles(File directory) {
-        File[] files = directory.listFiles((dir, name) -> name.toLowerCase().endsWith(".log")); // Filter for .log files
+        File[] files = directory.listFiles((dir, name) -> name.toLowerCase().endsWith(".log"));
 
         if (files != null) {
             Arrays.sort(files, Comparator.comparingLong(File::lastModified).reversed());
@@ -241,15 +293,12 @@ public class LogViewer extends OpMode {
 
 
     private File getSpecificFile(File directory, String fileName) {
-        File[] files = directory.listFiles((dir, name) -> name.toLowerCase().endsWith(".log")); // Filter for .log files
+        File[] files = directory.listFiles((dir, name) -> name.toLowerCase().endsWith(".log"));
 
         if (files != null) {
             for (File file : files) {
-//                System.out.println("file: "+ file.getName().trim());
                 String substring = fileName.trim().substring(1, fileName.length() - 1);
-//                System.out.println("equals "+ substring + " : "+ file.getName().trim().equals(substring)+"\n");
                 if ((file.getName()).equals(substring)) {
-//                    System.out.println("FILE FOUND: "+fileName);
                     return file;
                 }
             }
@@ -259,7 +308,7 @@ public class LogViewer extends OpMode {
     }
 
     private File getLatestLogFile(File directory) {
-        File[] files = directory.listFiles((dir, name) -> name.toLowerCase().endsWith(".log")); // Filter for .log files
+        File[] files = directory.listFiles((dir, name) -> name.toLowerCase().endsWith(".log"));
         File latestFile = null;
         long lastModified = Long.MIN_VALUE;
 
@@ -273,5 +322,4 @@ public class LogViewer extends OpMode {
         }
         return latestFile;
     }
-
 }
