@@ -1,11 +1,17 @@
 package org.firstinspires.ftc.teamcode.Auton;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.ParallelAction;
+import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.Helper.Beak.newBeak;
 import org.firstinspires.ftc.teamcode.Helper.ViperSlide.BucketAction;
 import org.firstinspires.ftc.teamcode.Helper.ViperSlide.ViperAction;
+import org.firstinspires.ftc.teamcode.RoadRunner.MecanumDrive;
 
 @Config
 @Autonomous(name = "AutoTestFun", group = "Test")
@@ -19,8 +25,10 @@ public class AutoTestFun extends LinearOpMode {
 
     private newBeak Beak;
     private BucketAction Bucket;
+    private MecanumDrive drive;
 
     public void runOpMode() {
+        drive = new MecanumDrive(hardwareMap, new Pose2d(-29, -5, 0));
         Beak = new newBeak(hardwareMap);
         Bucket = new BucketAction(hardwareMap);
 
@@ -37,7 +45,9 @@ public class AutoTestFun extends LinearOpMode {
             telemetry.addLine("Test Sequence Running...");
             telemetry.update();
 
-            Bucket.StartPosition();
+            toLine();
+
+            /*Bucket.StartPosition();
 
             if (!PARAMS.DropOnSlide) {
                 Beak.autonReachSamp();
@@ -50,6 +60,10 @@ public class AutoTestFun extends LinearOpMode {
             }
 
             sleep(2000);
+
+             */
+
+
         }
 
 
@@ -66,5 +80,16 @@ public class AutoTestFun extends LinearOpMode {
 
         telemetry.addLine("Test Sequence Complete");
         telemetry.update();
+    }
+
+    public void toLine(){
+        //beginning position: ends at the sub
+        Action extraMove = drive.actionBuilder(drive.pose)
+                .setReversed(true)
+                //.splineToLinearHeading()
+                .splineToSplineHeading(new Pose2d(-1, 38, Math.toRadians(-90)), Math.toRadians(-180))
+                .build();
+        Actions.runBlocking(new SequentialAction());
+
     }
 }
