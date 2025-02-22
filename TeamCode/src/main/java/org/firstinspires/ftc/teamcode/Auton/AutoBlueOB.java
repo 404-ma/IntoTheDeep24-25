@@ -24,7 +24,7 @@ public class AutoBlueOB extends LinearOpMode {
 
     public static class Params {
         public boolean easy = false;
-        public string version = "10.1";
+        public String version = "10.1";
         public double y = 38.4;
         public double lastMoveX = -11;
         public double lastMoveY = 30;

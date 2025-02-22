@@ -196,14 +196,6 @@ public class ViperAction {
         };
     }
 
-    public Action TEST_perfBeforeDropOff() {
-        return packet -> {
-            perfMoveForSub();
-            SystemClock.sleep(300);
-            return false;
-        };
-    }
-
     public Action autonLowerBucket(){
         return packet -> {
             moveToPosition(PARAMS.viperHighBasketPos);
