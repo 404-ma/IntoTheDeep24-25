@@ -20,6 +20,7 @@ public class newBeak {
         public double sliderMinPos = 0.21;
         public double sliderPosChange = 0.03;
         public double sliderPosAuton = 0.090;
+        public double sliderClimbPos = 0.215;
         public double sliderRetractDelayPosition = 0.2425;
 
         //hover height is wrong
@@ -225,7 +226,7 @@ public class newBeak {
         long delay = ((targetElbowPosition >= PARAMS.elbowClimbInit) ? PARAMS.climbBeakInitializeDelay : 0);
         closedBeak();
         MoveElbow(PARAMS.elbowClimbInit);
-        MoveSlider(PARAMS.sliderMinPos);
+        MoveSlider(PARAMS.sliderClimbPos);
         return (delay);
     }
 
