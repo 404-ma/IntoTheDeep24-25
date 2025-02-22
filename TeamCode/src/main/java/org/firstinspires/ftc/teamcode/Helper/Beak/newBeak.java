@@ -32,7 +32,7 @@ public class newBeak {
         public double beakClosePos = 0.47; // closed
 
         //elbow
-        public double elbowPickPos = 0.479;// Pickup Off Mat
+        public double elbowPickPos = 0.48;// Pickup Off Mat //0.479
         public double elbowReachPos = 0.49;    // Grabber Extended Drive
         public double elbowSuplexBucketPos = 0.56;    // Suplex in Bucket
         public double elbowReachPosThird = 0.479;    // Grabber Extended Drive
@@ -245,18 +245,28 @@ public class newBeak {
         openBeak();
     }
 
+    public Action autonSP(){
+        return packet ->{
+        MoveSlider(PARAMS.sliderMinPos);
+        MoveElbow(PARAMS.elbowStartPos);
+        openBeak();
+        return false;
+        };
+
+    }
+
 
     public Action autonReachSamp() {
         return packet -> {
             openBeak();
             PickUpElbow();
-            SystemClock.sleep(850);
+            SystemClock.sleep(749);
             closedBeak();
             SystemClock.sleep(PARAMS.beakClosedDelay);
             MoveElbow(PARAMS.elbowSuplexBucketPos);
             SystemClock.sleep( PARAMS.suplexBucketOpenBeakDelay);
             openBeak();
-            SystemClock.sleep( 775);
+            SystemClock.sleep( 699);
             ElbStart();
             return false;
         };

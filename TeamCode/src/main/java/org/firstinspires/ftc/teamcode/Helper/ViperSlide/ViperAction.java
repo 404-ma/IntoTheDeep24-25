@@ -18,7 +18,7 @@ public class ViperAction {
         public double viperLowBasketPos = 1050;   // Low Basket (Approx 38% of High Basket)
         public double viperCatchPoint = 0;        // Catch Point for Sample
         public double viperMotorSpeed = 0.9;
-        public double viperMotorSpeedAuton = 1.1;
+        public double viperMotorSpeedAuton = 1.2;
         public double viperMaxPos = 3000;
         public double viperPowerLimitPos = 2800;
 
@@ -112,13 +112,14 @@ public class ViperAction {
         moveToPosition((int) PARAMS.viperHighBasketPos);
     }
 
+    public void moveToHighBasketAuton() {
+        moveToPositionAuton((int) PARAMS.viperHighBasketPos);
+    }
 
     public void moveToLowBasket() {
 
         moveToPosition((int) PARAMS.viperLowBasketPos);
     }
-
-
 
     /*
      * Autonomous Viper Movements
@@ -136,7 +137,7 @@ public class ViperAction {
 
     public Action dumpSampleHighBasket() {
         return packet -> {
-            moveToHighBasket();
+            moveToHighBasketAuton();
             SystemClock.sleep((long) PARAMS.delayMoveHighBasket);
             bucketAction.DumpSample();
             SystemClock.sleep((long)PARAMS.delayBucketDump);
@@ -191,7 +192,7 @@ public class ViperAction {
     public Action perfBeforeDropOff() {
         return packet -> {
             perfMoveForSub();
-            SystemClock.sleep(1000);
+            SystemClock.sleep(300);
             return false;
         };
     }
@@ -214,6 +215,7 @@ public class ViperAction {
     public Action autonReset(){
         return packet -> {
             moveToPosition(PARAMS.autonReset);
+            SystemClock.sleep(0);
             return false;
         };
     }
