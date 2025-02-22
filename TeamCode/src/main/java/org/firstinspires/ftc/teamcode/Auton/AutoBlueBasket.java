@@ -21,12 +21,13 @@ import org.firstinspires.ftc.teamcode.Helper.ViperSlide.ClawAction;
 public class AutoBlueBasket extends LinearOpMode {
 
     public static class Params {
-        public double versionNumber = 16.7;
+        public double versionNumber = 16.8;
 
     }
 
     //PICK UP FROM RANDOM SPOTS
     //ENDING POSITION
+    //shorter starting point --> 3.5 inches
     public static Params PARAMS = new Params();
     private MecanumDrive drive;
     private newBeak arm;
@@ -62,7 +63,7 @@ public class AutoBlueBasket extends LinearOpMode {
             toPosTwo();
             toBasket();
             toPosThree();
-           // toBasket();
+            toBasket();
     }
 
     private void toSub(){
@@ -84,7 +85,7 @@ public class AutoBlueBasket extends LinearOpMode {
     private void toNewPosOne(){
         Action moveOne = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .splineTo(new Vector2d(-21, -42.6), Math.toRadians(180))
+                .splineTo(new Vector2d(-21, -39.1), Math.toRadians(180))
                 .build();
         Actions.runBlocking(new SequentialAction(new SequentialAction(moveOne,  bucket.autonPrepForCatch()), arm.autonReachSamp()));
     }
@@ -92,7 +93,7 @@ public class AutoBlueBasket extends LinearOpMode {
         //pos two
         Action moveTwo = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .splineTo(new Vector2d(-21, -52.6), Math.toRadians(180))
+                .splineTo(new Vector2d(-21, -49.1), Math.toRadians(180))
                 .build();
         Actions.runBlocking(new SequentialAction((new ParallelAction (vip.autonReset(), moveTwo)), arm.autonReachSamp()));
     }
@@ -101,11 +102,11 @@ public class AutoBlueBasket extends LinearOpMode {
         //pos three
         Action moveThree = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .splineTo(new Vector2d(-24.9, -50.6), Math.toRadians(225))
+                .splineTo(new Vector2d(-24.9, -47.1), Math.toRadians(225))
                 .build();
         Actions.runBlocking(new SequentialAction((new ParallelAction (vip.autonReset(), moveThree)), arm.autonReachSamp()));
     }
-
+//
     private void toPosThreeTest2(){
         //pos three
         Action moveThree = drive.actionBuilder(drive.pose)
@@ -113,9 +114,6 @@ public class AutoBlueBasket extends LinearOpMode {
                 .splineTo(new Vector2d(-36, -40.1), Math.toRadians(235))
                 .build();
         Actions.runBlocking(new SequentialAction((new ParallelAction (vip.autonReset(), moveThree)), arm.autonReachSamp()));
-
-        //real y position --> -62.6
-        //length of entire robot --> 22.5
     }
     private void toPosThreeTesting(){
         //pos three
@@ -131,7 +129,7 @@ public class AutoBlueBasket extends LinearOpMode {
         //basket
         Action moveBasket= drive.actionBuilder(drive.pose)
                 .setReversed(true)
-                .splineTo(new Vector2d(-6.7, -51.8), Math.toRadians(-50.0))
+                .splineTo(new Vector2d(-6.7, -48.3), Math.toRadians(-50.0))
                 .build();
         Actions.runBlocking(new SequentialAction(moveBasket, vip.dumpSampleHighBasket(), bucket.autonPrepForCatch()) );
     }

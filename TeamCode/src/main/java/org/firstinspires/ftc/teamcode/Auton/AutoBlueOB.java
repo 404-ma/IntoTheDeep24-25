@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.Auton;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
@@ -17,12 +18,18 @@ import org.firstinspires.ftc.teamcode.Helper.ViperSlide.ClawAction;
 import org.firstinspires.ftc.teamcode.Helper.ViperSlide.ViperAction;
 import org.firstinspires.ftc.teamcode.RoadRunner.MecanumDrive;
 
+@Config
 @Autonomous(name = "AutoBlueOB", group = "RoadRunner")
 public class AutoBlueOB extends LinearOpMode {
 
     public static class Params {
         public boolean easy = false;
-        public double y = 38;
+        public String version = "10.1";
+        public double y = 38.4;
+        public double lastMoveX = -11;
+        public double lastMoveY = 30;
+        public double LastHeading = 0;
+
     }
 
     public static Params PARAMS = new Params();
@@ -44,7 +51,7 @@ public class AutoBlueOB extends LinearOpMode {
 
         waitForStart();
 
-        telemetry.addData("okay", "so code needs to push 9");
+        telemetry.addData(PARAMS.version, "Drive OB Version" );
         telemetry.update();
 
         BobColor.setLEDColor(LEDColorHelper.LEDColor.GREEN);
@@ -59,7 +66,10 @@ public class AutoBlueOB extends LinearOpMode {
             moveBack();
             goMarkOne();
             forwardOnOne();
+            BobColor.setLEDColor(LEDColorHelper.LEDColor.ORANGE);
             turningOnOne();
+
+            turningToTwo();
             /*markOne();
             humanPlayer();
             Grabbing2();
@@ -92,7 +102,7 @@ public class AutoBlueOB extends LinearOpMode {
         //move back a little bit
         Action moveBack = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .lineToX(-27)
+                .lineToX(-26)
                 .build();
         Actions.runBlocking(new ParallelAction(moveBack, Viper.clawHumanGrab(), Bucket.autonHuman()));
     }
@@ -114,12 +124,42 @@ public class AutoBlueOB extends LinearOpMode {
     }
 
     public void turningOnOne(){
+        // Large Part of Move
         Action Turning = drive.actionBuilder(drive.pose)
                 .setReversed(true)
-                .splineTo(new Vector2d(-25, 26), Math.toRadians(111))
+                .turnTo(Math.toRadians(35))
+                .splineToConstantHeading(new Vector2d(-14, 30), Math.toRadians(35))
                 .build();
-        Actions.runBlocking(new ParallelAction(Turning, Beak.autonSliderExtend()));
+        Actions.runBlocking(Turning);
+
+        // Last Bit and Sample Drop
+        Action Drop = drive.actionBuilder(drive.pose)
+                .setReversed(true)
+                .splineToConstantHeading(new Vector2d(-17.5, 33), Math.toRadians(35))
+                .build();
+        Actions.runBlocking(new ParallelAction(Drop, Beak.autonDropSampleToHuman()));
     }
+
+    public void turningToTwo() {
+        // Drive Sample Two and Pickup
+        Action Pickup = drive.actionBuilder(drive.pose)
+                .setReversed(false)
+                .turnTo(Math.toRadians(136))
+                .splineToConstantHeading(new Vector2d(-27.5, 33), Math.toRadians(136))
+                .build();
+        Actions.runBlocking(new SequentialAction(Pickup, Beak.autonReachOB()));
+
+        // Drive to Wall and Dump
+
+        Action PickupTurn = drive.actionBuilder(drive.pose)
+                .setReversed(true)
+                .splineTo(new Vector2d(-0.5, 28), 0)
+                .build();
+        Actions.runBlocking(new ParallelAction(PickupTurn, Beak.autonPickupToSlide()));
+        Actions.runBlocking(new SequentialAction(Beak.autonDropToHuman(), Claw.grabFromHuman(), new ParallelAction(Viper.perfBeforeDropOff(), Bucket.autonBucketDown())));
+    }
+
+//                 .splineTo(new Vector2d(PARAMS.lastMoveX, PARAMS.lastMoveY), Math.toRadians(PARAMS.LastHeading))
 
     public void markOne(){
         //move to mark

@@ -256,48 +256,43 @@ public class newBeak {
             MoveElbow(PARAMS.elbowSuplexBucketPos);
             SystemClock.sleep( PARAMS.suplexBucketOpenBeakDelay);
             openBeak();
-            SystemClock.sleep( PARAMS.suplexBucketOpenBeakDelay + PARAMS.beakClosedDelay);
+            SystemClock.sleep( 775);
             ElbStart();
             return false;
         };
     }
-
-    public Action autonReachSampThird() {
-        return packet -> {
-            openBeak();
-            MoveElbow(PARAMS.elbowPickPos);
-            SystemClock.sleep(850);
-            MoveSlider(0.0495);
-            SystemClock.sleep(900);
-            closedBeak();
-            SystemClock.sleep(PARAMS.beakClosedDelay);
-            MoveSlider(PARAMS.sliderMinPos);
-            MoveElbow(PARAMS.elbowSuplexBucketPos);
-            SystemClock.sleep( PARAMS.suplexBucketOpenBeakDelay);
-            openBeak();
-            SystemClock.sleep( PARAMS.suplexBucketOpenBeakDelay + PARAMS.beakClosedDelay);
-            ElbStart();
-            return false;
-        };
-    }
-
 
     public Action autonReachOB() {
         return packet -> {
             MoveElbow(PARAMS.elbowPickPos);
+            MoveBeak(PARAMS.beakOpenDropPos);
             SystemClock.sleep(PARAMS.beakPickUpDelay);
-            MoveBeak(PARAMS.beakWideOpen);
-            SystemClock.sleep(600);
+
+            MoveBeak(PARAMS.beakWideOpen + 0.03);
+            SystemClock.sleep(500);
             return false;
         };
     }
 
     public Action autonPickupOB() {
         return packet -> {
+            SystemClock.sleep(50); // Delay for Ozer - Let Robot Turn Before Beak Close
             closedBeak();
             SystemClock.sleep(PARAMS.beakClosedDelay);
 
-            MoveElbow(PARAMS.elbowPickPos);
+            MoveElbow(PARAMS.elbowStartPos);
+            return false;
+        };
+    }
+
+    public Action autonPickupToSlide() {
+        return packet -> {
+            SystemClock.sleep(50); // Delay for Ozer - Let Robot Turn Before Beak Close
+            closedBeak();
+            SystemClock.sleep(PARAMS.beakClosedDelay);
+
+            MoveElbow(PARAMS.elbowSuplexSlideDumpPos);
+            SystemClock.sleep(PARAMS.suplexSlideDumpOpenBeakDelay);
             return false;
         };
     }
@@ -314,6 +309,20 @@ public class newBeak {
         return packet -> {
             MoveSlider(PARAMS.sliderMinPos);
             SystemClock.sleep(1000);
+            return false;
+        };
+    }
+
+    public Action autonDropSampleToHuman() {
+        return packet -> {
+            // Drop Sample to Human Player
+            MoveElbow(PARAMS.elbowPickPos);
+            SystemClock.sleep(500);
+            MoveBeak(PARAMS.beakOpenDropPos);
+            SystemClock.sleep(PARAMS.beakClosedDelay);
+
+            MoveElbow(PARAMS.elbowStartPos);
+            SystemClock.sleep(500);
             return false;
         };
     }
