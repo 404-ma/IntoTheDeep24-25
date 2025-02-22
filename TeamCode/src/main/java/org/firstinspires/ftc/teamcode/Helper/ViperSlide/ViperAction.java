@@ -18,7 +18,7 @@ public class ViperAction {
         public double viperLowBasketPos = 1050;   // Low Basket (Approx 38% of High Basket)
         public double viperCatchPoint = 0;        // Catch Point for Sample
         public double viperMotorSpeed = 0.9;
-        public double viperMotorSpeedAuton = 1.2;
+        public double viperMotorSpeedAuton = 1.5;
         public double viperMaxPos = 3000;
         public double viperPowerLimitPos = 2800;
 
@@ -215,7 +215,6 @@ public class ViperAction {
     public Action autonReset(){
         return packet -> {
             moveToPosition(PARAMS.autonReset);
-            SystemClock.sleep(0);
             return false;
         };
     }
