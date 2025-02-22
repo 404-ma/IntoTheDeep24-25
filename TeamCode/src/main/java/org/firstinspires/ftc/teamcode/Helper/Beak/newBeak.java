@@ -41,6 +41,8 @@ public class newBeak {
         public double elbowStartPos = 0.541;    // Drive Position
         public double elbowClimbInit = 0.539;    // Climb Start - Beak Forward
         public double elbowClimbSafePos = 0.575; // Climb - Beak Tucked Down
+        public double elbowIncrease = 0.01;
+        public double elbowDecrease = -0.01;
 
         //delays
         public long beakClosedDelay = 50;
@@ -98,12 +100,12 @@ public class newBeak {
     }
 
     public void IncreaseElbow(){
-        targetElbowPosition += 0.01;
+        targetElbowPosition += PARAMS.elbowIncrease;
         MoveElbow(targetElbowPosition);
     }
 
     public void  DecreaseElbow(){
-        targetElbowPosition -= 0.01;
+        targetElbowPosition += PARAMS.elbowDecrease;
         MoveElbow(targetElbowPosition);
     }
 
