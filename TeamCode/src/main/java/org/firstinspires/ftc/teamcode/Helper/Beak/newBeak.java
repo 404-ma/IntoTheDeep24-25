@@ -16,10 +16,10 @@ public class newBeak {
 
     public static class Params {
         //slider
-        public double sliderMaxPos = 0.440;
-        public double sliderMinPos = 0.045;
+        public double sliderMaxPos = 0.375;
+        public double sliderMinPos = 0.0;
         public double sliderPosChange = 0.03;
-        public double sliderPosAuton = 0.090;
+        public double sliderClimbPos = 0.0;
         public double sliderRetractDelayPosition = 0.2425;
 
         //hover height is wrong
@@ -28,19 +28,21 @@ public class newBeak {
         //beak
         public double beakOpenDropPos = 0.62; //for suplex
         public double beakOpenPickupPos = 0.63; //for pick up
-        public double beakWideOpen = 0.66; // for wider opening
+        public double beakWideOpen = 0.67; // for wider opening
         public double beakClosePos = 0.47; // closed
 
         //elbow
-        public double elbowPickPos = 0.479;// Pickup Off Mat
+        public double elbowPickPos = 0.48;// Pickup Off Mat //0.479
         public double elbowReachPos = 0.49;    // Grabber Extended Drive
         public double elbowSuplexBucketPos = 0.56;    // Suplex in Bucket
         public double elbowReachPosThird = 0.479;    // Grabber Extended Drive
 
         public double elbowSuplexSlideDumpPos = 0.57; // Suplex to Slide
-        public double elbowStartPos = 0.541;    // Drive Position
+        public double elbowStartPos = 0.54;    // Drive Position
         public double elbowClimbInit = 0.539;    // Climb Start - Beak Forward
         public double elbowClimbSafePos = 0.575; // Climb - Beak Tucked Down
+        public double elbowIncrease = 0.02;
+        public double elbowDecrease = -0.011;
 
         //delays
         public long beakClosedDelay = 50;
@@ -98,13 +100,18 @@ public class newBeak {
     }
 
     public void IncreaseElbow(){
-        targetElbowPosition += 0.01;
+        targetElbowPosition += PARAMS.elbowIncrease;
         MoveElbow(targetElbowPosition);
     }
 
     public void  DecreaseElbow(){
-        targetElbowPosition -= 0.01;
+        targetElbowPosition += PARAMS.elbowDecrease;
         MoveElbow(targetElbowPosition);
+    }
+
+
+    public void slideClimbPosition() {
+        MoveSlider(PARAMS.sliderClimbPos);
     }
 
     public void JoystickMoveSlide(float position) {
@@ -245,18 +252,28 @@ public class newBeak {
         openBeak();
     }
 
+    public Action autonSP(){
+        return packet ->{
+        MoveSlider(PARAMS.sliderMinPos);
+        MoveElbow(PARAMS.elbowStartPos);
+        openBeak();
+        return false;
+        };
+
+    }
+
 
     public Action autonReachSamp() {
         return packet -> {
             openBeak();
             PickUpElbow();
-            SystemClock.sleep(850);
+            SystemClock.sleep(749);
             closedBeak();
             SystemClock.sleep(PARAMS.beakClosedDelay);
             MoveElbow(PARAMS.elbowSuplexBucketPos);
             SystemClock.sleep( PARAMS.suplexBucketOpenBeakDelay);
             openBeak();
-            SystemClock.sleep( 775);
+            SystemClock.sleep( 699);
             ElbStart();
             return false;
         };

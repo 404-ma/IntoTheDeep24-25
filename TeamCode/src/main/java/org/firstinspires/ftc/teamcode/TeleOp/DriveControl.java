@@ -24,7 +24,7 @@ import java.util.Locale;
 @Config
 @TeleOp(name = "Driver Control", group = "Competition!!")
 public class DriveControl extends LinearOpMode {
-    private static final String version = "2.3";
+    private static final String version = "2.5";
 
     private ViperAction viperAction;
     private BucketAction bucketAction;
@@ -206,6 +206,7 @@ public class DriveControl extends LinearOpMode {
                     schemeTransition = true;
                     DeferredActions.ClearDeferredActions();
                     clawAction.CloseGrip();
+                    beakAction.slideClimbPosition();
                     // Compute Deferred Action Delays Based on Current Positions
                     long beakClimbInitCompletionDelay = beakAction.ClimbInitialize();
                     long bucketClimbCompletionDelay = bucketAction.ClimbDelayNeeded() + beakClimbInitCompletionDelay;
