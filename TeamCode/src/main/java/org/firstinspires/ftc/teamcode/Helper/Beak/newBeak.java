@@ -20,7 +20,7 @@ public class newBeak {
         public double sliderMinPos = 0.21;
         public double sliderPosChange = 0.03;
         public double sliderPosAuton = 0.090;
-        public double sliderClimbPos = 0.215;
+        public double sliderClimbPos = 0.225;
         public double sliderRetractDelayPosition = 0.2425;
 
         //hover height is wrong
@@ -41,7 +41,7 @@ public class newBeak {
         public double elbowSuplexSlideDumpPos = 0.57; // Suplex to Slide
         public double elbowStartPos = 0.54;    // Drive Position
         public double elbowClimbInit = 0.539;    // Climb Start - Beak Forward
-        public double elbowClimbSafePos = 0.575; // Climb - Beak Tucked Down
+        public double elbowClimbSafePos = 0.585; // Climb - Beak Tucked Down
         public double elbowIncrease = 0.02;
         public double elbowDecrease = -0.011;
 
@@ -226,7 +226,6 @@ public class newBeak {
         long delay = ((targetElbowPosition >= PARAMS.elbowClimbInit) ? PARAMS.climbBeakInitializeDelay : 0);
         closedBeak();
         MoveElbow(PARAMS.elbowClimbInit);
-        MoveSlider(PARAMS.sliderClimbPos);
         return (delay);
     }
 
@@ -234,7 +233,7 @@ public class newBeak {
 
     public void ClimbPositions(){
         closedBeak();
-        MoveSlider(PARAMS.sliderMinPos);
+        MoveSlider(PARAMS.sliderClimbPos);
         MoveElbow(PARAMS.elbowClimbSafePos);
     }
 
