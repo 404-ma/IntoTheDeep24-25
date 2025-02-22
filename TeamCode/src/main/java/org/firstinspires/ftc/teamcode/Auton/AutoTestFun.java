@@ -28,7 +28,7 @@ public class AutoTestFun extends LinearOpMode {
     private MecanumDrive drive;
 
     public void runOpMode() {
-        drive = new MecanumDrive(hardwareMap, new Pose2d(-29, -5, 0));
+        drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
         Beak = new newBeak(hardwareMap);
         Bucket = new BucketAction(hardwareMap);
 
