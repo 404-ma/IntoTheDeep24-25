@@ -113,7 +113,7 @@ public class AutoBlueOB extends LinearOpMode {
                 .setReversed(false)
                 .splineTo(new Vector2d(-27, 22), Math.toRadians(130))
                 .build();
-        Actions.runBlocking(new ParallelAction(lineM1, Beak.autonReachOB()));
+        Actions.runBlocking(lineM1);
     }
 
     public void forwardOnOne(){
