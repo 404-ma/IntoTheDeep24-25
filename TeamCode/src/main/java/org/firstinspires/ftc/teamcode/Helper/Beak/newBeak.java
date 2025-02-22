@@ -225,6 +225,7 @@ public class newBeak {
         long delay = ((targetElbowPosition >= PARAMS.elbowClimbInit) ? PARAMS.climbBeakInitializeDelay : 0);
         closedBeak();
         MoveElbow(PARAMS.elbowClimbInit);
+        MoveSlider(PARAMS.sliderMinPos);
         return (delay);
     }
 
