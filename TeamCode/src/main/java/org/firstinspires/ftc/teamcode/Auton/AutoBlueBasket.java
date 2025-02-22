@@ -65,11 +65,10 @@ public class AutoBlueBasket extends LinearOpMode {
     private void toSub(){
         Action extraMove = drive.actionBuilder(drive.pose)
                 .setReversed(true)
-                .lineToX(-29.5)
+                .lineToX(-29.6)
                 .build();
-        Actions.runBlocking(new SequentialAction( (new ParallelAction( vip.fast_perfBeforeDropOff(), extraMove)),vip.perfClawDropOnSub(), claw.placeOnSub()) );
-
-        //positioned back
+        Actions.runBlocking(new ParallelAction( vip.fast_perfBeforeDropOff(), extraMove));
+        Actions.runBlocking(new SequentialAction(vip.perfClawDropOnSub(), claw.placeOnSub()));
         Action moveBack = drive.actionBuilder(drive.pose)
                 .setReversed(true)
                 .lineToX(-26)
