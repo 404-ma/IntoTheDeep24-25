@@ -95,7 +95,7 @@ public class AutoBlueOB extends LinearOpMode {
                 .setReversed(true)
                 .lineToX(-29.5)
                 .build();
-        Actions.runBlocking(new SequentialAction( (new ParallelAction(Viper.fast_perfBeforeDropOff(), extraMove)), Viper.perfClawDropOnSub(), Claw.placeOnSub()));
+        Actions.runBlocking(new SequentialAction((new ParallelAction(Viper.fast_perfBeforeDropOff(), extraMove)), Viper.perfClawDropOnSub(), Claw.placeOnSub()));
 
     }
 
@@ -136,7 +136,7 @@ public class AutoBlueOB extends LinearOpMode {
         // Last Bit and Sample Drop
         Action Drop = drive.actionBuilder(drive.pose)
                 .setReversed(true)
-                .splineToConstantHeading(new Vector2d(-17, 33), Math.toRadians(35))
+                .splineToConstantHeading(new Vector2d(-15, 33), Math.toRadians(35))
                 .build();
         Actions.runBlocking(new ParallelAction(Drop, Beak.autonDropSampleToHuman()));
     }
@@ -148,7 +148,7 @@ public class AutoBlueOB extends LinearOpMode {
                 .turnTo(Math.toRadians(136))
                 .splineToConstantHeading(new Vector2d(-27.5, 33), Math.toRadians(136))
                 .build();
-        Actions.runBlocking(new SequentialAction(Pickup, Beak.autonReachOB()));
+        Actions.runBlocking(new ParallelAction(Pickup, Beak.autonReachOB()));
 
         // Drive to Wall and Dump
         Action PickupTurn = drive.actionBuilder(drive.pose)
