@@ -52,7 +52,6 @@ public class AutoTestFun extends LinearOpMode {
             sleep(2000);
         }
 
-
         // Move sample down
 //        Viper.perfBeforeDropOff();
 //        sleep(500);

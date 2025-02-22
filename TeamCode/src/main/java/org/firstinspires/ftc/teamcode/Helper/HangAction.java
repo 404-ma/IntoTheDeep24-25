@@ -5,7 +5,6 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-
 public class HangAction {
     public static class Params {
         public double grappleStartPos = 0.11;
@@ -24,7 +23,7 @@ public class HangAction {
     public HangAction(HardwareMap hardwareMap) {
         left = hardwareMap.get(DcMotor.class, "hookLeft");
         left.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        left.setDirection(DcMotorSimple.Direction.REVERSE);
+        left.setDirection(DcMotorSimple.Direction.REVERSE); 
         left.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         right = hardwareMap.get(DcMotor.class, "hookRight");
