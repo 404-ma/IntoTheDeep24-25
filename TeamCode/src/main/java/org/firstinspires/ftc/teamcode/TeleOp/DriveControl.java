@@ -24,7 +24,7 @@ import java.util.Locale;
 @Config
 @TeleOp(name = "Driver Control", group = "Competition!!")
 public class DriveControl extends LinearOpMode {
-    private static final String version = "2.3";
+    private static final String version = "2.4";
 
     private ViperAction viperAction;
     private BucketAction bucketAction;

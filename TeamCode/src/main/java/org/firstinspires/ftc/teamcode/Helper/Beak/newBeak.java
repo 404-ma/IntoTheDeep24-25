@@ -28,7 +28,7 @@ public class newBeak {
         //beak
         public double beakOpenDropPos = 0.62; //for suplex
         public double beakOpenPickupPos = 0.63; //for pick up
-        public double beakWideOpen = 0.66; // for wider opening
+        public double beakWideOpen = 0.67; // for wider opening
         public double beakClosePos = 0.47; // closed
 
         //elbow
@@ -38,11 +38,11 @@ public class newBeak {
         public double elbowReachPosThird = 0.479;    // Grabber Extended Drive
 
         public double elbowSuplexSlideDumpPos = 0.57; // Suplex to Slide
-        public double elbowStartPos = 0.541;    // Drive Position
+        public double elbowStartPos = 0.54;    // Drive Position
         public double elbowClimbInit = 0.539;    // Climb Start - Beak Forward
         public double elbowClimbSafePos = 0.575; // Climb - Beak Tucked Down
-        public double elbowIncrease = 0.01;
-        public double elbowDecrease = -0.01;
+        public double elbowIncrease = 0.02;
+        public double elbowDecrease = -0.011;
 
         //delays
         public long beakClosedDelay = 50;
