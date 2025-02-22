@@ -19,6 +19,7 @@ public class newBeak {
         public double sliderMaxPos = 0.440;
         public double sliderMinPos = 0.045;
         public double sliderPosChange = 0.03;
+        public double sliderPosAuton = 0.090;
         public double sliderRetractDelayPosition = 0.2425;
 
         //hover height is wrong
@@ -31,7 +32,7 @@ public class newBeak {
         public double beakClosePos = 0.47; // closed
 
         //elbow
-        public double elbowPickPos = 0.475;     // Pickup Off Mat
+        public double elbowPickPos = 0.479;// Pickup Off Mat
         public double elbowReachPos = 0.49;    // Grabber Extended Drive
         public double elbowSuplexBucketPos = 0.56;    // Suplex in Bucket
         public double elbowSuplexSlideDumpPos = 0.57; // Suplex to Slide
@@ -45,7 +46,7 @@ public class newBeak {
         // ms Wait for Slider to Retract ot Min Pos before Suplex
         public long suplexSliderRetractDelay = 160;
         // ms Wait for Elbow Suplex to Bucket Before Opening Beak
-        public long suplexBucketOpenBeakDelay = 825;
+        public long suplexBucketOpenBeakDelay = 740;
         // ms Wait for Elbow Suplex to Slide Dump Before Opening Beak
         public long suplexSlideDumpOpenBeakDelay = 1050;
         // ms Wait for Sample to Fall in Bucket or Slide
@@ -262,22 +263,36 @@ public class newBeak {
 
     public Action autonReachOB() {
         return packet -> {
-            PickUpElbow();
-            SystemClock.sleep(500);
-            closedBeak();
-            
-            SystemClock.sleep(PARAMS.beakClosedDelay);
-            //MoveElbow(PARAMS.elbowReachPos);
-
-            MoveElbow(PARAMS.elbowSuplexSlideDumpPos);
-            SystemClock.sleep(500);
+            MoveElbow(PARAMS.elbowPickPos);
+            SystemClock.sleep(PARAMS.beakPickUpDelay);
+            MoveBeak(PARAMS.beakWideOpen);
+            SystemClock.sleep(600);
             return false;
         };
     }
 
-    public Action forParallel(){
+    public Action autonPickupOB() {
         return packet -> {
-            MoveElbow(PARAMS.elbowSuplexSlideDumpPos);
+            closedBeak();
+            SystemClock.sleep(PARAMS.beakClosedDelay);
+
+            MoveElbow(PARAMS.elbowPickPos);
+            return false;
+        };
+    }
+
+    public Action autonSliderExtend(){
+        return packet -> {
+            MoveSlider(PARAMS.sliderMaxPos);
+            SystemClock.sleep(1000);
+            return false;
+        };
+    }
+
+    public Action autonSliderRetract() {
+        return packet -> {
+            MoveSlider(PARAMS.sliderMaxPos);
+            SystemClock.sleep(1000);
             return false;
         };
     }
@@ -286,7 +301,7 @@ public class newBeak {
 
     public Action autonDropToHuman() {
         return packet -> {
-            SystemClock.sleep(300);
+            SystemClock.sleep(500);
             openBeak();
             SystemClock.sleep(200);
             ElbStart();
@@ -298,14 +313,11 @@ public class newBeak {
         return packet -> {
             MoveSlider(PARAMS.sliderMaxPos);
             SystemClock.sleep(1000);
-            PickUpElbow();
             SystemClock.sleep(600);
             closedBeak();
-            SystemClock.sleep(500);
+            SystemClock.sleep(PARAMS.beakClosedDelay);
             MoveElbow(PARAMS.elbowSuplexSlideDumpPos);
-            SystemClock.sleep(500);
-            MoveSlider(PARAMS.sliderMinPos);
-            SystemClock.sleep(1000);
+
             return false;
         };
     }

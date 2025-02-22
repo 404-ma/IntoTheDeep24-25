@@ -4,12 +4,14 @@ import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.TurnConstraints;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.acmerobotics.roadrunner.ftc.Actions;
 
 import org.firstinspires.ftc.teamcode.Helper.Beak.newBeak;
+import org.firstinspires.ftc.teamcode.Helper.LEDColorHelper;
 import org.firstinspires.ftc.teamcode.Helper.ViperSlide.BucketAction;
 import org.firstinspires.ftc.teamcode.Helper.ViperSlide.ClawAction;
 import org.firstinspires.ftc.teamcode.Helper.ViperSlide.ViperAction;
@@ -29,24 +31,25 @@ public class AutoBlueOB extends LinearOpMode {
     private ViperAction Viper;
     private newBeak Beak;
     private BucketAction Bucket;
+    private LEDColorHelper BobColor;
     private double x = 0;
 
     public void runOpMode(){
-
         drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
-
         Claw = new ClawAction(hardwareMap);
         Viper = new ViperAction(hardwareMap);
         Beak = new newBeak(hardwareMap);
         Bucket = new BucketAction(hardwareMap);
-
-        Claw.CloseGrip();
-        Beak.autonStartPos();
+        BobColor = new LEDColorHelper(hardwareMap);
 
         waitForStart();
 
         telemetry.addData("okay", "so code needs to push 9");
         telemetry.update();
+
+        BobColor.setLEDColor(LEDColorHelper.LEDColor.GREEN);
+        Claw.CloseGrip();
+        Beak.autonStartPos();
 
         if(PARAMS.easy){
             forward();
@@ -54,7 +57,9 @@ public class AutoBlueOB extends LinearOpMode {
         else{
             toLine();
             moveBack();
-            markOne();
+            goMarkOne();
+            forwardOnOne();
+            /*markOne();
             humanPlayer();
             Grabbing2();
             //Grabbing3();
@@ -62,7 +67,10 @@ public class AutoBlueOB extends LinearOpMode {
             GoBack();
             Reverse();
             backToLine();
+            moveBack();
             backAndForth();
+
+             */
             //forward();
             //toParkLast();
             updateTelemetry(drive.pose.position);
@@ -83,16 +91,40 @@ public class AutoBlueOB extends LinearOpMode {
         //move back a little bit
         Action moveBack = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .lineToX(-20)
+                .lineToX(-27)
                 .build();
         Actions.runBlocking(new ParallelAction(moveBack, Viper.clawHumanGrab(), Bucket.autonHuman()));
+    }
+
+    public void goMarkOne(){
+        Action lineM1 = drive.actionBuilder(drive.pose)
+                .setReversed(false)
+                .splineTo(new Vector2d(-27, 22), Math.toRadians(130))
+                .build();
+        Actions.runBlocking(new ParallelAction(lineM1, Beak.autonReachOB()));
+    }
+
+    public void forwardOnOne(){
+        Action MoreOne = drive.actionBuilder(drive.pose)
+                .setReversed(false)
+                .splineTo(new Vector2d(-28, 23.5), Math.toRadians(130))
+                .build();
+        Actions.runBlocking(new SequentialAction(MoreOne, Beak.autonPickupOB()));
+    }
+
+    public void turningOnOne(){
+        Action Turning = drive.actionBuilder(drive.pose)
+                .setReversed(false)
+                .splineTo(new Vector2d(-25, 26Math.toRadians(111))
+                .build();
+        Actions.runBlocking(new ParallelAction(Turning, Beak.autonSliderExtend()));
     }
 
     public void markOne(){
         //move to mark
         Action lineM1 = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .splineTo(new Vector2d(-21, 37), Math.toRadians(180))
+                .splineTo(new Vector2d(-21, 36.8), Math.toRadians(180))
                 .build();
         Actions.runBlocking(new SequentialAction(lineM1, Beak.autonReachOB()));
     }
@@ -101,7 +133,7 @@ public class AutoBlueOB extends LinearOpMode {
         //drop off in human player zone
         Action Player = drive.actionBuilder(drive.pose)
                 .setReversed(true)
-                .lineToX(-5)
+                .lineToX(-8)
                 .build();
         Actions.runBlocking(new ParallelAction(Player, Beak.autonDropToHuman()));
     }
@@ -110,9 +142,9 @@ public class AutoBlueOB extends LinearOpMode {
         //Grab from 2 mark
         Action Grab = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .strafeTo(new Vector2d(-13,49))
+                .strafeTo(new Vector2d(-21,47))
                 .build();
-        Actions.runBlocking(new SequentialAction(Grab, Beak.grabAndDrop()));
+        Actions.runBlocking(new SequentialAction(Grab, Beak.autonReachOB()));
 
     }
 
@@ -131,9 +163,9 @@ public class AutoBlueOB extends LinearOpMode {
         Action PlayerGrab = drive.actionBuilder(drive.pose)
                 .setReversed(true)
                 //.turnTo(0)
-                .lineToX(-3)
+                .lineToX(-1.5)
                 .build();
-        Actions.runBlocking(new SequentialAction(PlayerGrab, Beak.autonDropToHuman(), Claw.grabFromHuman(), new ParallelAction(Viper.perfBeforeDropOff(), Bucket.autonBucketDown())));
+        Actions.runBlocking(new SequentialAction(new ParallelAction(PlayerGrab, Beak.autonDropToHuman()), Claw.grabFromHuman(), new ParallelAction(Viper.perfBeforeDropOff(), Bucket.autonBucketDown())));
     }
 
     public void GoBack(){
@@ -167,7 +199,7 @@ public class AutoBlueOB extends LinearOpMode {
     public void backAndForth(){
         Action clawToOB = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .splineTo(new Vector2d(-1, 37), Math.toRadians(0))
+                .splineTo(new Vector2d(-1, 37), Math.toRadians(90))
                 .build();
         Actions.runBlocking(new SequentialAction(clawToOB, Claw.grabFromHuman(), Viper.perfBeforeDropOff()));
     }

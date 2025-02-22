@@ -21,9 +21,12 @@ import org.firstinspires.ftc.teamcode.Helper.ViperSlide.ClawAction;
 public class AutoBlueBasket extends LinearOpMode {
 
     public static class Params {
-        public double versionNumber = 15.6;
+        public double versionNumber = 15.7;
 
     }
+
+    //PICK UP FROM RANDOM SPOTS
+    //ENDING POSITION
     public static Params PARAMS = new Params();
     private MecanumDrive drive;
     private newBeak arm;
@@ -97,7 +100,7 @@ public class AutoBlueBasket extends LinearOpMode {
         //pos three
         Action moveThree = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .splineTo(new Vector2d(-22.5, -50.1), Math.toRadians(227))
+                .splineTo(new Vector2d(-23.9, -50.1), Math.toRadians(230))
                 .build();
         Actions.runBlocking(new SequentialAction((new ParallelAction (vip.autonReset(), moveThree)), arm.autonReachSamp()));
     }
@@ -108,6 +111,15 @@ public class AutoBlueBasket extends LinearOpMode {
                 .splineTo(new Vector2d(-6.7, -51.8), Math.toRadians(-50.0))
                 .build();
         Actions.runBlocking(new SequentialAction(moveBasket, vip.dumpSampleHighBasket(), bucket.autonPrepForCatch()) );
+    }
+
+    private void toParking(){
+        Action movePark = drive.actionBuilder(drive.pose)
+                .setReversed(false)
+                .splineTo(new Vector2d(-50, -20), Math.toRadians(90))
+                .build();
+        Actions.runBlocking(movePark);
+
     }
 
     private void dumbBasket(){
