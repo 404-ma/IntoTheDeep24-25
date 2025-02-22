@@ -21,7 +21,7 @@ import org.firstinspires.ftc.teamcode.Helper.ViperSlide.ClawAction;
 public class AutoBlueBasket extends LinearOpMode {
 
     public static class Params {
-        public double versionNumber = 17.3;
+        public double versionNumber = 17.4;
 
     }
 
@@ -67,7 +67,7 @@ public class AutoBlueBasket extends LinearOpMode {
                 .setReversed(true)
                 .lineToX(-29.5)
                 .build();
-        Actions.runBlocking(new SequentialAction( (new ParallelAction(arm.autonSP(), vip.fast_perfBeforeDropOff(), extraMove)),vip.perfClawDropOnSub(), claw.placeOnSub()) );
+        Actions.runBlocking(new SequentialAction( (new ParallelAction( vip.fast_perfBeforeDropOff(), extraMove)),vip.perfClawDropOnSub(), claw.placeOnSub()) );
 
         //positioned back
         Action moveBack = drive.actionBuilder(drive.pose)
@@ -124,7 +124,7 @@ public class AutoBlueBasket extends LinearOpMode {
         //basket
         Action moveBasket= drive.actionBuilder(drive.pose)
                 .setReversed(true)
-                .splineTo(new Vector2d(-6.7, -47.7), Math.toRadians(-48.5))
+                .splineTo(new Vector2d(-6.7, -46.2), Math.toRadians(-47.2))
                 .build();
         Actions.runBlocking(new SequentialAction(moveBasket, vip.dumpSampleHighBasket(), bucket.autonPrepForCatch()) );
     }

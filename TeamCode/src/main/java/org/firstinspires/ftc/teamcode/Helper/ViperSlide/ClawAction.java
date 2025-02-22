@@ -13,8 +13,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class ClawAction {
     public static class Params {
         public boolean gripServoReverse = false;
-        public double gripOpenPos = 1.0;
-        public double gripClosedPos = 0.73;
+        public double gripOpenPos = 0.44;
+        public double gripClosedPos = 0.15;
     }
 
     public static Params PARAMS = new Params();

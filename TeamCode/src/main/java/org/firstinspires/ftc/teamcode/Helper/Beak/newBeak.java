@@ -16,10 +16,10 @@ public class newBeak {
 
     public static class Params {
         //slider
-        public double sliderMaxPos = 0.375;
-        public double sliderMinPos = 0.0;
+        public double sliderMaxPos = 0.64;
+        public double sliderMinPos = 0.21;
         public double sliderPosChange = 0.03;
-        public double sliderClimbPos = 0.0;
+        public double sliderPosAuton = 0.090;
         public double sliderRetractDelayPosition = 0.2425;
 
         //hover height is wrong
@@ -32,7 +32,7 @@ public class newBeak {
         public double beakClosePos = 0.47; // closed
 
         //elbow
-        public double elbowPickPos = 0.48;// Pickup Off Mat //0.479
+        public double elbowPickPos = 0.479;// Pickup Off Mat
         public double elbowReachPos = 0.49;    // Grabber Extended Drive
         public double elbowSuplexBucketPos = 0.56;    // Suplex in Bucket
         public double elbowReachPosThird = 0.479;    // Grabber Extended Drive
@@ -107,11 +107,6 @@ public class newBeak {
     public void  DecreaseElbow(){
         targetElbowPosition += PARAMS.elbowDecrease;
         MoveElbow(targetElbowPosition);
-    }
-
-
-    public void slideClimbPosition() {
-        MoveSlider(PARAMS.sliderClimbPos);
     }
 
     public void JoystickMoveSlide(float position) {
@@ -252,28 +247,18 @@ public class newBeak {
         openBeak();
     }
 
-    public Action autonSP(){
-        return packet ->{
-        MoveSlider(PARAMS.sliderMinPos);
-        MoveElbow(PARAMS.elbowStartPos);
-        openBeak();
-        return false;
-        };
-
-    }
-
 
     public Action autonReachSamp() {
         return packet -> {
             openBeak();
             PickUpElbow();
-            SystemClock.sleep(749);
+            SystemClock.sleep(850);
             closedBeak();
             SystemClock.sleep(PARAMS.beakClosedDelay);
             MoveElbow(PARAMS.elbowSuplexBucketPos);
             SystemClock.sleep( PARAMS.suplexBucketOpenBeakDelay);
             openBeak();
-            SystemClock.sleep( 699);
+            SystemClock.sleep( 775);
             ElbStart();
             return false;
         };
@@ -286,6 +271,8 @@ public class newBeak {
             MoveBeak(PARAMS.beakOpenDropPos);
             SystemClock.sleep(PARAMS.beakPickUpDelay);
             MoveBeak(PARAMS.beakWideOpen + 0.03);
+
+            SystemClock.sleep(500);
             return false;
         };
     }
