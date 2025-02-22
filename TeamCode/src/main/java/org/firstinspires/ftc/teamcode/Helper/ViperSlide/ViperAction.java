@@ -59,7 +59,7 @@ public class ViperAction {
         if(!PARAMS.hang)
             viperMotor.setPower(PARAMS.viperMotorSpeed);
         else {
-            viperMotor.setPower(0.8);
+            viperMotor.setPower(0.5);
             PARAMS.hang = false;
         }
         viperMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -71,7 +71,7 @@ public class ViperAction {
         if(!PARAMS.hang)
             viperMotor.setPower(PARAMS.viperMotorSpeedAuton);
         else {
-            viperMotor.setPower(0.5);
+            viperMotor.setPower(1);
             PARAMS.hang = false;
         }
         viperMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -147,11 +147,11 @@ public class ViperAction {
     /*
     Claw + Viper
      */
-    public void moveForSub () {PARAMS.hang = true; moveToPosition((int) PARAMS.clawLow);}
-    public void placeOnSub () {PARAMS.hang = true; moveToPosition((int) PARAMS.clawLowHang);}
-    public void clawHuman () {PARAMS.hang = true; moveToPosition((int) PARAMS.clawWall);}
-    public void perfMoveForSub () {PARAMS.hang = true; moveToPosition((int) PARAMS.clawHigh);}
-    public void perfPlaceOnSub () {PARAMS.hang = true; moveToPosition((int) PARAMS.clawHighHang);}
+    public void moveForSub () {PARAMS.hang = true; moveToPositionAuton((int) PARAMS.clawLow);}
+    public void placeOnSub () {PARAMS.hang = true; moveToPositionAuton((int) PARAMS.clawLowHang);}
+    public void clawHuman () {PARAMS.hang = true; moveToPositionAuton((int) PARAMS.clawWall);}
+    public void perfMoveForSub () {PARAMS.hang = true; moveToPositionAuton((int) PARAMS.clawHigh);}
+    public void perfPlaceOnSub () {PARAMS.hang = true; moveToPositionAuton((int) PARAMS.clawHighHang);}
 
     /*
     Claw + Viper Auto
@@ -192,6 +192,14 @@ public class ViperAction {
         return packet -> {
             perfMoveForSub();
             SystemClock.sleep(1000);
+            return false;
+        };
+    }
+
+    public Action fast_perfBeforeDropOff() {
+        return packet -> {
+            perfMoveForSub();
+            SystemClock.sleep(0);
             return false;
         };
     }

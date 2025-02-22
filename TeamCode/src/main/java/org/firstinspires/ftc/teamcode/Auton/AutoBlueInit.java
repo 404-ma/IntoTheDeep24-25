@@ -97,7 +97,7 @@ public class AutoBlueInit extends LinearOpMode {
         Actions.runBlocking(
                 new SequentialAction(
                     (
-                        (new ParallelAction(Viper.perfBeforeDropOff(), extraMove))
+                        (new ParallelAction(Viper.fast_perfBeforeDropOff(), extraMove))
                     )
                 )
         );
