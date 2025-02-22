@@ -35,6 +35,8 @@ public class newBeak {
         public double elbowPickPos = 0.479;// Pickup Off Mat
         public double elbowReachPos = 0.49;    // Grabber Extended Drive
         public double elbowSuplexBucketPos = 0.56;    // Suplex in Bucket
+        public double elbowReachPosThird = 0.479;    // Grabber Extended Drive
+
         public double elbowSuplexSlideDumpPos = 0.57; // Suplex to Slide
         public double elbowStartPos = 0.541;    // Drive Position
         public double elbowClimbInit = 0.539;    // Climb Start - Beak Forward
@@ -248,9 +250,28 @@ public class newBeak {
         return packet -> {
             openBeak();
             PickUpElbow();
-            SystemClock.sleep(1000);
+            SystemClock.sleep(850);
             closedBeak();
             SystemClock.sleep(PARAMS.beakClosedDelay);
+            MoveElbow(PARAMS.elbowSuplexBucketPos);
+            SystemClock.sleep( PARAMS.suplexBucketOpenBeakDelay);
+            openBeak();
+            SystemClock.sleep( PARAMS.suplexBucketOpenBeakDelay + PARAMS.beakClosedDelay);
+            ElbStart();
+            return false;
+        };
+    }
+
+    public Action autonReachSampThird() {
+        return packet -> {
+            openBeak();
+            MoveElbow(PARAMS.elbowPickPos);
+            SystemClock.sleep(850);
+            MoveSlider(0.0495);
+            SystemClock.sleep(900);
+            closedBeak();
+            SystemClock.sleep(PARAMS.beakClosedDelay);
+            MoveSlider(PARAMS.sliderMinPos);
             MoveElbow(PARAMS.elbowSuplexBucketPos);
             SystemClock.sleep( PARAMS.suplexBucketOpenBeakDelay);
             openBeak();
@@ -291,12 +312,11 @@ public class newBeak {
 
     public Action autonSliderRetract() {
         return packet -> {
-            MoveSlider(PARAMS.sliderMaxPos);
+            MoveSlider(PARAMS.sliderMinPos);
             SystemClock.sleep(1000);
             return false;
         };
     }
-
 
 
     public Action autonDropToHuman() {

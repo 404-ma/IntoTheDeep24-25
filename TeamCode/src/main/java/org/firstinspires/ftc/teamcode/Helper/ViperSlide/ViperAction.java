@@ -28,7 +28,7 @@ public class ViperAction {
         public double clawWall = 14;
 
         public double delayMoveLowBasket = 1000 ;    //ms To Wait for Dump
-        public double delayMoveHighBasket = 2300;  //ms To Wait for Dump
+        public double delayMoveHighBasket = 1950;  //ms To Wait for Dump
         public double delayBucketDump = 1000;
 
         public int autonReset = 100;

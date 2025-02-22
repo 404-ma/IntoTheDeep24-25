@@ -21,7 +21,7 @@ import org.firstinspires.ftc.teamcode.Helper.ViperSlide.ClawAction;
 public class AutoBlueBasket extends LinearOpMode {
 
     public static class Params {
-        public double versionNumber = 15.7;
+        public double versionNumber = 16.7;
 
     }
 
@@ -70,8 +70,9 @@ public class AutoBlueBasket extends LinearOpMode {
                 .setReversed(true)
                 .lineToX(-29.5)
                 .build();
-        Actions.runBlocking(new SequentialAction( (new ParallelAction(vip.perfBeforeDropOff(), extraMove)), vip.perfClawDropOnSub(), claw.placeOnSub()));
+        Actions.runBlocking(new ParallelAction(vip.perfBeforeDropOff(), extraMove));
 
+        Actions.runBlocking(new SequentialAction(vip.perfClawDropOnSub(), claw.placeOnSub()));
         //positioned back
         Action moveBack = drive.actionBuilder(drive.pose)
                 .setReversed(true)
@@ -100,9 +101,31 @@ public class AutoBlueBasket extends LinearOpMode {
         //pos three
         Action moveThree = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .splineTo(new Vector2d(-23.9, -50.1), Math.toRadians(230))
+                .splineTo(new Vector2d(-24.9, -50.6), Math.toRadians(225))
                 .build();
         Actions.runBlocking(new SequentialAction((new ParallelAction (vip.autonReset(), moveThree)), arm.autonReachSamp()));
+    }
+
+    private void toPosThreeTest2(){
+        //pos three
+        Action moveThree = drive.actionBuilder(drive.pose)
+                .setReversed(false)
+                .splineTo(new Vector2d(-36, -40.1), Math.toRadians(235))
+                .build();
+        Actions.runBlocking(new SequentialAction((new ParallelAction (vip.autonReset(), moveThree)), arm.autonReachSamp()));
+
+        //real y position --> -62.6
+        //length of entire robot --> 22.5
+    }
+    private void toPosThreeTesting(){
+        //pos three
+        Action moveThree = drive.actionBuilder(drive.pose)
+                .setReversed(false)
+                .splineTo(new Vector2d(-24.8, -50.1), Math.toRadians(230))
+                .build();
+        Actions.runBlocking(new SequentialAction((new ParallelAction (vip.autonReset(), moveThree))));
+
+
     }
     private void toBasket(){
         //basket
