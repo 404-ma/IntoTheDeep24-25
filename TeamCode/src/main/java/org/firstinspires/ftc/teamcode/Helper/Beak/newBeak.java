@@ -16,10 +16,10 @@ public class newBeak {
 
     public static class Params {
         //slider
-        public double sliderMaxPos = 0.375;
-        public double sliderMinPos = 0.0;
+        public double sliderMaxPos = 0.43;
+        public double sliderMinPos = 0.3;
         public double sliderPosChange = 0.03;
-        public double sliderClimbPos = 0.0;
+        public double sliderClimbPos = 0.3;
         public double sliderRetractDelayPosition = 0.2425;
 
         //hover height is wrong
