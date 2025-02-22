@@ -111,7 +111,7 @@ public class AutoBlueOB extends LinearOpMode {
     public void goMarkOne(){
         Action lineM1 = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .splineTo(new Vector2d(-26.5, 19), Math.toRadians(130))
+                .splineTo(new Vector2d(-26.5, 20), Math.toRadians(130))
                 .build();
         Actions.runBlocking(lineM1);
     }
@@ -129,7 +129,7 @@ public class AutoBlueOB extends LinearOpMode {
         Action Turning = drive.actionBuilder(drive.pose)
                 .setReversed(true)
                 .turnTo(Math.toRadians(35))
-                .splineToConstantHeading(new Vector2d(-14, 30), Math.toRadians(35))
+                .splineToConstantHeading(new Vector2d(-14, 31), Math.toRadians(35))
                 .build();
         Actions.runBlocking(Turning);
 
