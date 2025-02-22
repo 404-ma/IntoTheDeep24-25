@@ -28,7 +28,7 @@ public class newBeak {
         //beak
         public double beakOpenDropPos = 0.62; //for suplex
         public double beakOpenPickupPos = 0.63; //for pick up
-        public double beakWideOpen = 0.66; // for wider opening
+        public double beakWideOpen = 0.67; // for wider opening
         public double beakClosePos = 0.47; // closed
 
         //elbow
@@ -38,9 +38,11 @@ public class newBeak {
         public double elbowReachPosThird = 0.479;    // Grabber Extended Drive
 
         public double elbowSuplexSlideDumpPos = 0.57; // Suplex to Slide
-        public double elbowStartPos = 0.541;    // Drive Position
+        public double elbowStartPos = 0.54;    // Drive Position
         public double elbowClimbInit = 0.539;    // Climb Start - Beak Forward
         public double elbowClimbSafePos = 0.575; // Climb - Beak Tucked Down
+        public double elbowIncrease = 0.02;
+        public double elbowDecrease = -0.011;
 
         //delays
         public long beakClosedDelay = 50;
@@ -98,12 +100,12 @@ public class newBeak {
     }
 
     public void IncreaseElbow(){
-        targetElbowPosition += 0.01;
+        targetElbowPosition += PARAMS.elbowIncrease;
         MoveElbow(targetElbowPosition);
     }
 
     public void  DecreaseElbow(){
-        targetElbowPosition -= 0.01;
+        targetElbowPosition += PARAMS.elbowDecrease;
         MoveElbow(targetElbowPosition);
     }
 
@@ -265,10 +267,11 @@ public class newBeak {
     public Action autonReachOB() {
         return packet -> {
             MoveElbow(PARAMS.elbowPickPos);
+
             MoveBeak(PARAMS.beakOpenDropPos);
             SystemClock.sleep(PARAMS.beakPickUpDelay);
-
             MoveBeak(PARAMS.beakWideOpen + 0.03);
+
             SystemClock.sleep(500);
             return false;
         };
@@ -276,7 +279,14 @@ public class newBeak {
 
     public Action autonPickupOB() {
         return packet -> {
-            SystemClock.sleep(50); // Delay for Ozer - Let Robot Turn Before Beak Close
+            MoveElbow(PARAMS.elbowPickPos);
+
+            MoveBeak(PARAMS.beakOpenDropPos);
+            SystemClock.sleep(PARAMS.beakPickUpDelay);
+            MoveBeak(PARAMS.beakWideOpen + 0.03);
+
+
+            SystemClock.sleep(500);
             closedBeak();
             SystemClock.sleep(PARAMS.beakClosedDelay);
 
