@@ -21,7 +21,6 @@ public class BucketAction {
     }
 
     public static Params PARAMS = new Params();
-
     public static double targetBucketPosition = -1;
     private final Servo bucketServo;
 

@@ -16,6 +16,8 @@ public class newBeak {
 
     public static class Params {
         //slider
+
+        //hi
         public double sliderMaxPos = 0.64;
         public double sliderMinPos = 0.21;
         public double sliderPosChange = 0.03;
@@ -252,14 +254,14 @@ public class newBeak {
     public Action autonReachSamp() {
         return packet -> {
             openBeak();
-            PickUpElbow();
+            MoveElbow(PARAMS.elbowPickPos);
             SystemClock.sleep(850);
             closedBeak();
             SystemClock.sleep(PARAMS.beakClosedDelay);
             MoveElbow(PARAMS.elbowSuplexBucketPos);
             SystemClock.sleep( PARAMS.suplexBucketOpenBeakDelay);
             openBeak();
-            SystemClock.sleep( 775);
+            SystemClock.sleep( 640);
             ElbStart();
             return false;
         };

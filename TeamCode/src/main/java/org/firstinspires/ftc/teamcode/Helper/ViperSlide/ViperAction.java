@@ -215,6 +215,7 @@ public class ViperAction {
     public Action autonReset(){
         return packet -> {
             moveToPosition(PARAMS.autonReset);
+            SystemClock.sleep(0);
             return false;
         };
     }
