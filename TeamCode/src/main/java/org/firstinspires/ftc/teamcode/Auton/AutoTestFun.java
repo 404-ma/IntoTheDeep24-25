@@ -14,6 +14,7 @@ public class AutoTestFun extends LinearOpMode {
         public boolean DropOnSlide = false;
     }
 
+
     public static Params PARAMS = new Params();
 
     private newBeak Beak;
@@ -24,27 +25,33 @@ public class AutoTestFun extends LinearOpMode {
         Bucket = new BucketAction(hardwareMap);
 
         waitForStart();
-
         telemetry.addLine("Starting Test Sequence");
         telemetry.update();
 
         Beak.autonStartPos();
-        if (PARAMS.DropOnSlide)
+        if (PARAMS.DropOnSlide) {
             Bucket.DumpSample();
-        else
-            Bucket.StartPosition();
-
-        if (!PARAMS.DropOnSlide) {
-            Beak.autonReachSamp();
-            sleep(600);
-            Bucket.DumpSample();
-            sleep(500);
-        } else {
-            Beak.autonReachOB();
-            sleep(500);
         }
 
-        sleep(2000);
+        while (opModeIsActive()) {
+            telemetry.addLine("Test Sequence Running...");
+            telemetry.update();
+
+            Bucket.StartPosition();
+
+            if (!PARAMS.DropOnSlide) {
+                Beak.autonReachSamp();
+                sleep(2000);
+                Bucket.DumpSample();
+                sleep(500);
+            } else {
+                Beak.autonReachOB();
+                sleep(500);
+            }
+
+            sleep(2000);
+        }
+
 
         // Move sample down
 //        Viper.perfBeforeDropOff();
