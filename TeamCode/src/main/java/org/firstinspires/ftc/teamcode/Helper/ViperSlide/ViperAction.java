@@ -196,7 +196,7 @@ public class ViperAction {
         };
     }
 
-    public Action TEST_perfBeforeDropOff() {
+    public Action fast_perfBeforeDropOff() {
         return packet -> {
             perfMoveForSub();
             SystemClock.sleep(0);
