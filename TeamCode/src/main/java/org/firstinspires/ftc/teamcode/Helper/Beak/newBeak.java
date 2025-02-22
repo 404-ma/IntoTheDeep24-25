@@ -16,10 +16,10 @@ public class newBeak {
 
     public static class Params {
         //slider
-        public double sliderMaxPos = 0.440;
-        public double sliderMinPos = 0.045;
+        public double sliderMaxPos = 0.375;
+        public double sliderMinPos = 0.0;
         public double sliderPosChange = 0.03;
-        public double sliderPosAuton = 0.090;
+        public double sliderClimbPos = 0.0;
         public double sliderRetractDelayPosition = 0.2425;
 
         //hover height is wrong
@@ -107,6 +107,11 @@ public class newBeak {
     public void  DecreaseElbow(){
         targetElbowPosition += PARAMS.elbowDecrease;
         MoveElbow(targetElbowPosition);
+    }
+
+
+    public void slideClimbPosition() {
+        MoveSlider(PARAMS.sliderClimbPos);
     }
 
     public void JoystickMoveSlide(float position) {
