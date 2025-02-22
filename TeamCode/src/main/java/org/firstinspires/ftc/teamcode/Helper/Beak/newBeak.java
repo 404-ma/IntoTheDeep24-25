@@ -286,8 +286,6 @@ public class newBeak {
             MoveBeak(PARAMS.beakOpenDropPos);
             SystemClock.sleep(PARAMS.beakPickUpDelay);
             MoveBeak(PARAMS.beakWideOpen + 0.03);
-
-            SystemClock.sleep(500);
             return false;
         };
     }
@@ -312,13 +310,6 @@ public class newBeak {
 
     public Action autonPickupToSlide() {
         return packet -> {
-            SystemClock.sleep(800);
-            MoveElbow(PARAMS.elbowPickPos);
-            MoveBeak(PARAMS.beakOpenDropPos);
-            SystemClock.sleep(PARAMS.beakPickUpDelay);
-
-            MoveBeak(PARAMS.beakWideOpen + 0.03);
-            SystemClock.sleep(500);
             SystemClock.sleep(50); // Delay for Ozer - Let Robot Turn Before Beak Close
             closedBeak();
             SystemClock.sleep(PARAMS.beakClosedDelay);
