@@ -287,8 +287,6 @@ public class newBeak {
             MoveBeak(PARAMS.beakOpenDropPos);
             SystemClock.sleep(PARAMS.beakPickUpDelay);
             MoveBeak(PARAMS.beakWideOpen + 0.03);
-
-            SystemClock.sleep(500);
             return false;
         };
     }
