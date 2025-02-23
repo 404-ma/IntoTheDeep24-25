@@ -5,6 +5,8 @@ import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.TurnConstraints;
+import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.acmerobotics.roadrunner.ftc.Actions;
@@ -71,7 +73,7 @@ public class AutoBlueOB extends LinearOpMode {
             updateTelemetry(drive.pose);
             FirstGo();
             backAndForth();
-            FirstGo();
+            ThirdGrab();
             BobColor.setLEDColor(LEDColorHelper.LEDColor.ORANGE);
             backAndForth();
         }
@@ -125,7 +127,7 @@ public class AutoBlueOB extends LinearOpMode {
         Action Pickup = drive.actionBuilder(drive.pose)
                 .setReversed(false)
                 .turnTo(Math.toRadians(136))
-                .splineToConstantHeading(new Vector2d(-28, 33.8), Math.toRadians(136))
+                .splineToConstantHeading(new Vector2d(-28, 33.3), Math.toRadians(136))
                 .build();
         Actions.runBlocking(new SequentialAction(Pickup, Beak.autonReachOB()));
 
@@ -136,6 +138,14 @@ public class AutoBlueOB extends LinearOpMode {
                 .build();
         Actions.runBlocking(new ParallelAction(PickupTurn, Beak.autonPickupToSlide()));
         Actions.runBlocking(new SequentialAction(Beak.autonDropToHuman(), Claw.grabFromHuman(), new ParallelAction(Viper.fast_perfBeforeDropOff(), Bucket.autonBucketDown())));
+    }
+
+    public void ThirdGrab(){
+        Action third = drive.actionBuilder(drive.pose)
+                .setReversed(false)
+                .splineToSplineHeading(new Pose2d(-29, -3, Math.toRadians(0)), Math.toRadians(-180))
+                .build();
+        Actions.runBlocking(new SequentialAction(new ParallelAction(third, Viper.fast_perfBeforeDropOff()), Claw.placeOnSub()));
     }
 
     public void FirstGo(){
