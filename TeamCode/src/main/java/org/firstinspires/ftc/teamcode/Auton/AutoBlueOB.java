@@ -70,18 +70,8 @@ public class AutoBlueOB extends LinearOpMode {
             turningOnOne();
 
             turningToTwo();
-            /*markOne();
-            humanPlayer();
-            Grabbing2();
-            //Grabbing3();
-            HumanToOB();
-             */
-            GoBack();
-            Reverse();
-            backToLine();
-            moveBack();
-            backAndForth();
-
+            FirstGo();
+            //backAndForth();
 
             //forward();
             //toParkLast();
@@ -111,7 +101,7 @@ public class AutoBlueOB extends LinearOpMode {
     public void goMarkOne(){
         Action lineM1 = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .splineTo(new Vector2d(-27, 20), Math.toRadians(130))
+                .splineTo(new Vector2d(-26.5, 20.3), Math.toRadians(130))
                 .build();
         Actions.runBlocking(lineM1);
     }
@@ -119,7 +109,7 @@ public class AutoBlueOB extends LinearOpMode {
     public void forwardOnOne(){
         Action MoreOne = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .splineToConstantHeading(new Vector2d(-27.5, 20), Math.toRadians(130))
+                .splineToConstantHeading(new Vector2d(-27, 20.7), Math.toRadians(130))
                 .build();
         Actions.runBlocking(new ParallelAction(MoreOne, Beak.autonPickupOB()));
     }
@@ -129,14 +119,14 @@ public class AutoBlueOB extends LinearOpMode {
         Action Turning = drive.actionBuilder(drive.pose)
                 .setReversed(true)
                 .turnTo(Math.toRadians(35))
-                .splineToConstantHeading(new Vector2d(-14, 31), Math.toRadians(35))
+                .splineToConstantHeading(new Vector2d(-14, 32), Math.toRadians(35))
                 .build();
         Actions.runBlocking(Turning);
 
         // Last Bit and Sample Drop
         Action Drop = drive.actionBuilder(drive.pose)
                 .setReversed(true)
-                .splineToConstantHeading(new Vector2d(-17, 33), Math.toRadians(35))
+                .splineToConstantHeading(new Vector2d(-17, 32), Math.toRadians(35))
                 .build();
         Actions.runBlocking(new ParallelAction(Drop, Beak.autonDropSampleToHuman()));
     }
@@ -146,20 +136,37 @@ public class AutoBlueOB extends LinearOpMode {
         Action Pickup = drive.actionBuilder(drive.pose)
                 .setReversed(false)
                 .turnTo(Math.toRadians(136))
-                .splineToConstantHeading(new Vector2d(-28, 34), Math.toRadians(136))
+                .splineToConstantHeading(new Vector2d(-28, 33.8), Math.toRadians(136))
                 .build();
         Actions.runBlocking(new SequentialAction(Pickup, Beak.autonReachOB()));
 
         // Drive to Wall and Dump
         Action PickupTurn = drive.actionBuilder(drive.pose)
                 .setReversed(true)
-                .splineTo(new Vector2d(4, 28), 0)
+                .splineTo(new Vector2d(3.5, 28), 0)
                 .build();
         Actions.runBlocking(new ParallelAction(PickupTurn, Beak.autonPickupToSlide()));
         Actions.runBlocking(new SequentialAction(Beak.autonDropToHuman(), Claw.grabFromHuman(), new ParallelAction(Viper.fast_perfBeforeDropOff(), Bucket.autonBucketDown())));
     }
 
-//                 .splineTo(new Vector2d(PARAMS.lastMoveX, PARAMS.lastMoveY), Math.toRadians(PARAMS.LastHeading))
+    public void FirstGo(){
+        Action move = drive.actionBuilder(drive.pose)
+                .setReversed(false)
+                .splineToSplineHeading(new Pose2d(-20, -5, Math.toRadians(180)), Math.toRadians(180))
+                .build();
+        Actions.runBlocking(new SequentialAction(move, Claw.placeOnSub()));
+    }
+
+    public void backAndForth(){
+        Action move2 = drive.actionBuilder(drive.pose)
+                .setReversed(true)
+                .lineToX(-24)
+                .splineToSplineHeading(new Pose2d(1, 28, Math.toRadians(0)), Math.toRadians(180))
+                .build();
+        Actions.runBlocking(new SequentialAction(new ParallelAction(move2, Viper.clawHumanGrab())));
+    }
+
+//                 .splineTo(new Vector2d(PARAMS.lastMoveX, PARAMS.lastMoveY), Math.toRadians(PARAMS.LastHeading)
 
     public void markOne(){
         //move to mark
@@ -235,14 +242,6 @@ public class AutoBlueOB extends LinearOpMode {
                 .splineTo(new Vector2d(-29, -5), Math.toRadians(180))
                 .build();
         Actions.runBlocking(new SequentialAction(backAgain, Viper.perfClawDropOnSub(), Claw.placeOnSub()));
-    }
-
-    public void backAndForth(){
-        Action clawToOB = drive.actionBuilder(drive.pose)
-                .setReversed(false)
-                .splineTo(new Vector2d(-1, 37), Math.toRadians(70))
-                .build();
-        Actions.runBlocking(new SequentialAction(clawToOB, Claw.grabFromHuman(), Viper.perfBeforeDropOff()));
     }
 
     private void toParkLast(){
