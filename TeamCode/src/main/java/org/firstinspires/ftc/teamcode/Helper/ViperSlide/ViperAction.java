@@ -189,7 +189,7 @@ public class ViperAction {
     public Action perfClawDropOnSub () {
         return packet -> {
             perfPlaceOnSub();
-            SystemClock.sleep(550);
+            SystemClock.sleep(500);
             return false;
         };
     }

@@ -265,9 +265,8 @@ public class newBeak {
             MoveBeak(PARAMS.beakOpenDropPos);
             SystemClock.sleep(PARAMS.beakPickUpDelay);
             MoveBeak(PARAMS.beakWideOpen + 0.03);
-
             MoveElbow(PARAMS.elbowPickPos);
-            SystemClock.sleep(850);
+            SystemClock.sleep(700);
             closedBeak();
             SystemClock.sleep(PARAMS.beakClosedDelay);
             MoveElbow(PARAMS.elbowSuplexBucketPos);
@@ -284,11 +283,10 @@ public class newBeak {
             MoveBeak(PARAMS.beakOpenDropPos);
             SystemClock.sleep(PARAMS.beakPickUpDelay);
             MoveBeak(PARAMS.beakWideOpen + 0.03);
-
             MoveSlider(0.30);
             SystemClock.sleep(859);
             MoveElbow(PARAMS.elbowPickPos);
-            SystemClock.sleep(800);
+            SystemClock.sleep(750);
             closedBeak();
             SystemClock.sleep(PARAMS.beakClosedDelay);
             MoveSlider(PARAMS.sliderMinPos);
