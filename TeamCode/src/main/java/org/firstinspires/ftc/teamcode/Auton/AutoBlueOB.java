@@ -71,10 +71,10 @@ public class AutoBlueOB extends LinearOpMode {
             turningToTwo();
 
             updateTelemetry(drive.pose);
-            sleep(1000);
             FirstGo();
             backAndForth();
             FirstGo();
+            backAndForth();
 
             //forward();
             //toParkLast();
