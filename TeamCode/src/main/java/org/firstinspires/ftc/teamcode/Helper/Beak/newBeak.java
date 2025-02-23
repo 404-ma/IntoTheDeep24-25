@@ -247,9 +247,16 @@ public class newBeak {
     public void autonStartPos(){
         MoveSlider(PARAMS.sliderMinPos);
         MoveElbow(PARAMS.elbowStartPos);
-        openBeak();
     }
 
+    public Action startPosAuton(){
+        return packet -> {
+            MoveSlider(PARAMS.sliderMinPos);
+            MoveElbow(PARAMS.elbowStartPos);
+            return false;
+        };
+
+    }
 
     public Action autonReachSamp() {
         return packet -> {

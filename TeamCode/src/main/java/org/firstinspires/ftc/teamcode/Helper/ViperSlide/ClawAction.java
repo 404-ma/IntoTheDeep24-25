@@ -34,6 +34,12 @@ public class ClawAction {
         targetGripPosition = position;
     }
 
+    public Action closeGripAuton(){
+        return packet ->{
+          CloseGrip();
+          return false;
+        };
+    }
     public void CloseGrip(){
         MoveGrip(PARAMS.gripClosedPos);
     }
