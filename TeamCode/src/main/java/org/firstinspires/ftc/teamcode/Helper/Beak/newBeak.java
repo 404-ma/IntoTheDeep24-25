@@ -305,7 +305,7 @@ public class newBeak {
 
             MoveBeak(PARAMS.beakOpenDropPos);
             SystemClock.sleep(PARAMS.beakPickUpDelay);
-            MoveBeak(PARAMS.beakWideOpen + 0.03);
+            MoveBeak(PARAMS.beakWideOpen + 0.04);
 
             SystemClock.sleep(500);
             return false;
@@ -318,7 +318,7 @@ public class newBeak {
 
             MoveBeak(PARAMS.beakOpenDropPos);
             SystemClock.sleep(PARAMS.beakPickUpDelay);
-            MoveBeak(PARAMS.beakWideOpen + 0.03);
+            MoveBeak(PARAMS.beakWideOpen + 0.04);
 
             SystemClock.sleep(500);
             closedBeak();
