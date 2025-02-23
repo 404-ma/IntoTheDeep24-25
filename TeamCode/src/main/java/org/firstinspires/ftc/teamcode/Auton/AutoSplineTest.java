@@ -12,18 +12,18 @@ import org.firstinspires.ftc.teamcode.Helper.LEDColorHelper;
 import org.firstinspires.ftc.teamcode.RoadRunner.MecanumDrive;
 
 @Config
-@Autonomous(name = "Spline Test", group = "Test")
+@Autonomous(name = "Auto Spline Test", group = "Test")
 public class AutoSplineTest extends LinearOpMode {
     public static class Params {
-        public double MoveOneX = 30;
-        public double MoveOneY = 30;
-        public double MoveOneHeadingA = Math.toRadians(180);
-        public double MoveOneHeadingB = Math.toRadians(0);
+        public double MoveOneX = 29;
+        public double MoveOneY = 34;
+        public double MoveOneHeadingA = 180;
+        public double MoveOneHeadingB = 0;
 
-        public double MoveTwoX = 11;
-        public double MoveTwoY = 11;
-        public double MoveTwoHeadingA = Math.toRadians(-90);
-        public double MoveTwoHeadingB = Math.toRadians(0);
+        public double MoveTwoX = 1;
+        public double MoveTwoY = 0;
+        public double MoveTwoHeadingA = 0;
+        public double MoveTwoHeadingB = 180;
     }
 
     public static Params PARAMS = new Params();
@@ -52,10 +52,11 @@ public class AutoSplineTest extends LinearOpMode {
                 .build();
         Actions.runBlocking(move);
 
-        sleep(1000);
+        sleep(2000);
 
         Action move2 = drive.actionBuilder(drive.pose)
                 .setReversed(true)
+                .lineToX(PARAMS.MoveOneX - 5)
                 .splineToSplineHeading(new Pose2d(PARAMS.MoveTwoX, PARAMS.MoveTwoY,
                         Math.toRadians(PARAMS.MoveTwoHeadingA)), Math.toRadians(PARAMS.MoveTwoHeadingB))
                 .build();
