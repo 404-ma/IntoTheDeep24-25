@@ -341,28 +341,6 @@ public class newBeak {
         };
     }
 
-    public Action autonSliderExtend(){
-        return packet -> {
-            MoveSlider(PARAMS.sliderMaxPos);
-            SystemClock.sleep(1000);
-            return false;
-        };
-    }
-
-    public Action autonSliderRetract() {
-        return packet -> {
-            MoveSlider(PARAMS.sliderMinPos);
-            SystemClock.sleep(1000);
-            return false;
-        };
-    }
-
-    public Action autonSliderAuton(){
-        return packet -> {
-            MoveSlider(0.23);
-            return false;
-        };
-    }
 
     public Action autonDropSampleToHuman() {
         return packet -> {
