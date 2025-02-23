@@ -71,7 +71,7 @@ public class AutoBlueOB extends LinearOpMode {
 
             turningToTwo();
             FirstGo();
-            backAndForth();
+            //backAndForth();
 
             //forward();
             //toParkLast();
@@ -109,7 +109,7 @@ public class AutoBlueOB extends LinearOpMode {
     public void forwardOnOne(){
         Action MoreOne = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .splineToConstantHeading(new Vector2d(-27.5, 20.3), Math.toRadians(130))
+                .splineToConstantHeading(new Vector2d(-27.8, 20.3), Math.toRadians(130))
                 .build();
         Actions.runBlocking(new ParallelAction(MoreOne, Beak.autonPickupOB()));
     }
@@ -152,7 +152,7 @@ public class AutoBlueOB extends LinearOpMode {
     public void FirstGo(){
         Action move = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .splineToSplineHeading(new Pose2d(-24, -5, Math.toRadians(180)), Math.toRadians(0))
+                .splineToSplineHeading(new Pose2d(-23, -5, Math.toRadians(180)), Math.toRadians(0))
                 .build();
         Actions.runBlocking(new SequentialAction(move, Claw.placeOnSub()));
     }
