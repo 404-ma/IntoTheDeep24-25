@@ -17,7 +17,7 @@ public class ViperAction {
         public int  viperHighBasketPos = 2950;  // High Basket
         public double viperLowBasketPos = 1050;   // Low Basket (Approx 38% of High Basket)
         public double viperCatchPoint = 0;        // Catch Point for Sample
-        public double viperMotorSpeed = 0.9;
+        public double viperMotorSpeed = 1.0;
         public double viperMotorSpeedAuton = 1.5;
         public double viperMaxPos = 3000;
         public double viperPowerLimitPos = 2800;
