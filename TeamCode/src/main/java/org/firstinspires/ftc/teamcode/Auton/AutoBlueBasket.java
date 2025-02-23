@@ -22,7 +22,6 @@ public class AutoBlueBasket extends LinearOpMode {
 
     public static class Params {
         public double versionNumber = 18;
-
     }
 
     //PICK UP FROM RANDOM SPOTS
@@ -88,9 +87,9 @@ public class AutoBlueBasket extends LinearOpMode {
         //pos two
         Action moveTwo = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .splineTo(new Vector2d(-21, -50.1), Math.toRadians(180))
+                .splineTo(new Vector2d(-21, -49.5), Math.toRadians(180))
                 .build();
-        Actions.runBlocking(new SequentialAction((new ParallelAction (vip.autonReset(), moveTwo)), arm.autonReachSamp()));
+        Actions.runBlocking(new SequentialAction((new ParallelAction (vip.autonReset(), moveTwo)), arm.autonReachSampThird()));
     }
 
     private void toPosThree(){
@@ -99,7 +98,7 @@ public class AutoBlueBasket extends LinearOpMode {
                 .setReversed(false)
                 .splineTo(new Vector2d(-24.6, -47.1), Math.toRadians(224))
                 .build();
-        Actions.runBlocking(new SequentialAction((new ParallelAction (vip.autonReset(), moveThree)), arm.autonSliderExtend(), arm.autonSliderRetract(), arm.autonReachSamp()));
+        Actions.runBlocking(new SequentialAction((new ParallelAction (vip.autonReset(), moveThree)),  arm.autonReachSamp()));
     }
 //
     private void toPosThreeTest2(){
