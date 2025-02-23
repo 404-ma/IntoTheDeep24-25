@@ -60,7 +60,8 @@ public class AutoBlueBasket extends LinearOpMode {
             toPosThree();
             toBasket();
     }
-
+//-202 --> 180 --> set reversed true difference --> -94--> clockwise 
+    //
     private void toSub(){
         Action extraMove = drive.actionBuilder(drive.pose)
                 .setReversed(true)
@@ -79,15 +80,15 @@ public class AutoBlueBasket extends LinearOpMode {
     private void toNewPosOne(){
         Action moveOne = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .splineTo(new Vector2d(-21.2, -38.7), Math.toRadians(180))
+                .splineTo(new Vector2d(-21.4, -38.7), Math.toRadians(180))
                 .build();
-        Actions.runBlocking(new SequentialAction(new SequentialAction(moveOne,  bucket.autonPrepForCatch()), arm.autonReachSamp()));
+        Actions.runBlocking(new SequentialAction(new SequentialAction(moveOne, bucket.autonPrepForCatch()), arm.autonReachSamp()));
     }
     private void toPosTwo(){
         //pos two
         Action moveTwo = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .splineTo(new Vector2d(-21.2, -49.5), Math.toRadians(180))
+                .splineTo(new Vector2d(-21.4, -49.5), Math.toRadians(180))
                 .build();
         Actions.runBlocking(new SequentialAction((new ParallelAction (vip.autonReset(), moveTwo)), arm.autonReachSamp()));
     }
@@ -123,7 +124,7 @@ public class AutoBlueBasket extends LinearOpMode {
         //basket
         Action moveBasket= drive.actionBuilder(drive.pose)
                 .setReversed(true)
-                .splineTo(new Vector2d(-7.1, -46.2), Math.toRadians(-47.9))
+                .splineTo(new Vector2d(-7.7, -46.6), Math.toRadians(-47.9))
                 .build();
         Actions.runBlocking(new SequentialAction(moveBasket, vip.dumpSampleHighBasket(), bucket.autonPrepForCatch()) );
     }
