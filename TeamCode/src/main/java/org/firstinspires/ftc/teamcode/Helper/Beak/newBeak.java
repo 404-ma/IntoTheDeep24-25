@@ -23,6 +23,7 @@ public class newBeak {
         public double sliderPosChange = 0.03;
         public double sliderPosAuton = 0.090;
         public double sliderClimbPos = 0.225;
+        public double sliderSuplexPos = 0.25;
         public double sliderRetractDelayPosition = 0.2425;
 
         //hover height is wrong
@@ -155,6 +156,7 @@ public class newBeak {
 
     //button back
     public void ElbStart(){
+        MoveSlider(PARAMS.sliderMinPos);
         MoveElbow(PARAMS.elbowStartPos);
         openBeak();
     }
@@ -165,10 +167,10 @@ public class newBeak {
             closedBeak();
             DeferredActions.CreateDeferredAction(PARAMS.beakClosedDelay, DeferredActionType.SUPLEX_BUCKET);
         } else if (targetSliderPosition >= PARAMS.sliderRetractDelayPosition) {
-            MoveSlider(PARAMS.sliderMinPos);
+            MoveSlider(PARAMS.sliderSuplexPos);
             DeferredActions.CreateDeferredAction(PARAMS.suplexSliderRetractDelay, DeferredActionType.SUPLEX_BUCKET);
         } else {
-            MoveSlider(PARAMS.sliderMinPos);
+            MoveSlider(PARAMS.sliderSuplexPos);
             MoveElbow(PARAMS.elbowSuplexBucketPos);
             DeferredActions.CreateDeferredAction(PARAMS.suplexBucketOpenBeakDelay, DeferredActionType.BEAK_OPEN);
             long delay = PARAMS.suplexBucketOpenBeakDelay + PARAMS.suplexMoveToDrivePositionDelay;

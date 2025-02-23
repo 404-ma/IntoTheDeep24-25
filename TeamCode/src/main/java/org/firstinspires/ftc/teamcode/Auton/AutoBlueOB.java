@@ -24,7 +24,7 @@ public class AutoBlueOB extends LinearOpMode {
 
     public static class Params {
         public boolean easy = false;
-        public String version = "15.1";
+        public String version = "15.2";
         public double y = 38.4;
         public double lastMoveX = -11;
         public double lastMoveY = 30;
@@ -66,16 +66,18 @@ public class AutoBlueOB extends LinearOpMode {
             moveBack();
             goMarkOne();
             forwardOnOne();
-            BobColor.setLEDColor(LEDColorHelper.LEDColor.ORANGE);
             turningOnOne();
-
             turningToTwo();
+            BobColor.setLEDColor(LEDColorHelper.LEDColor.ORANGE);
+            updateTelemetry(drive.pose);
+            sleep(1000);
             FirstGo();
+            
             //backAndForth();
 
             //forward();
             //toParkLast();
-            updateTelemetry(drive.pose.position);
+            //updateTelemetry(drive.pose);
         }
     }
 
@@ -109,7 +111,7 @@ public class AutoBlueOB extends LinearOpMode {
     public void forwardOnOne(){
         Action MoreOne = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .splineToConstantHeading(new Vector2d(-27, 21), Math.toRadians(130))
+                .splineToConstantHeading(new Vector2d(-27.3, 21.5), Math.toRadians(130))
                 .build();
         Actions.runBlocking(new ParallelAction(MoreOne, Beak.autonPickupOB()));
     }
@@ -143,7 +145,7 @@ public class AutoBlueOB extends LinearOpMode {
         // Drive to Wall and Dump
         Action PickupTurn = drive.actionBuilder(drive.pose)
                 .setReversed(true)
-                .splineTo(new Vector2d(3.5, 28), 0)
+                .splineTo(new Vector2d(4.5, 28), 0)
                 .build();
         Actions.runBlocking(new ParallelAction(PickupTurn, Beak.autonPickupToSlide()));
         Actions.runBlocking(new SequentialAction(Beak.autonDropToHuman(), Claw.grabFromHuman(), new ParallelAction(Viper.fast_perfBeforeDropOff(), Bucket.autonBucketDown())));
@@ -152,9 +154,9 @@ public class AutoBlueOB extends LinearOpMode {
     public void FirstGo(){
         Action move = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .splineToSplineHeading(new Pose2d(-20, -5, Math.toRadians(180)), Math.toRadians(180))
+                .splineToSplineHeading(new Pose2d(-27, -3, Math.toRadians(0)), Math.toRadians(-180))
                 .build();
-        Actions.runBlocking(new SequentialAction(move, Claw.placeOnSub()));
+        Actions.runBlocking(new SequentialAction(move, Viper.perfClawDropOnSub(), Claw.placeOnSub()));
     }
 
     public void backAndForth(){
@@ -263,10 +265,12 @@ public class AutoBlueOB extends LinearOpMode {
         Actions.runBlocking(moveOut);
     }
 
-    private void updateTelemetry(Vector2d pos) {
+    private void updateTelemetry(Pose2d pos) {
+        telemetry.clear();
         telemetry.addLine("RoadRunner Auto Drive BLUE");
-        telemetry.addData("Current x Position", pos.x );
-        telemetry.addData("Current y Postion", pos.y);
+        telemetry.addData("Current x Position", pos.position.x );
+        telemetry.addData("Current y Postion", pos.position.y);
+        telemetry.addData("Current Heading", Math.toDegrees(pos.heading.imag) );
         telemetry.update();
 
     }
