@@ -1,6 +1,7 @@
-package org.firstinspires.ftc.teamcode.TeleOp.Tests;
+package org.firstinspires.ftc.teamcode.TeleOp.Hardware;
 
 import com.acmerobotics.dashboard.config.Config;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -11,6 +12,7 @@ import org.firstinspires.ftc.teamcode.Helper.LEDColorHelper;
 
 
 @Config
+@Disabled
 @TeleOp(name="LED Test", group="Hardware")
 public class LEDTest extends LinearOpMode {
     @Override

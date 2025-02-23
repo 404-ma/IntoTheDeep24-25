@@ -5,6 +5,7 @@ import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.Helper.Beak.newBeak;
@@ -12,6 +13,7 @@ import org.firstinspires.ftc.teamcode.Helper.LEDColorHelper;
 import org.firstinspires.ftc.teamcode.RoadRunner.MecanumDrive;
 
 @Config
+@Disabled
 @Autonomous(name = "Auto Spline Test", group = "Test")
 public class AutoSplineTest extends LinearOpMode {
     public static class Params {

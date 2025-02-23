@@ -301,13 +301,8 @@ public class newBeak {
 
     public Action autonReachOB() {
         return packet -> {
+            MoveBeak(PARAMS.beakWideOpen + 0.045);
             MoveElbow(PARAMS.elbowPickPos);
-
-            MoveBeak(PARAMS.beakOpenDropPos);
-            SystemClock.sleep(PARAMS.beakPickUpDelay);
-            MoveBeak(PARAMS.beakWideOpen + 0.03);
-
-            SystemClock.sleep(500);
             return false;
         };
     }
@@ -318,14 +313,13 @@ public class newBeak {
 
             MoveBeak(PARAMS.beakOpenDropPos);
             SystemClock.sleep(PARAMS.beakPickUpDelay);
-            MoveBeak(PARAMS.beakWideOpen + 0.03);
-
+            MoveBeak(PARAMS.beakWideOpen + 0.045);
 
             SystemClock.sleep(500);
             closedBeak();
             SystemClock.sleep(PARAMS.beakClosedDelay);
 
-            MoveElbow(PARAMS.elbowReachPos + 0.05);
+            MoveElbow(PARAMS.elbowReachPos);
             return false;
         };
     }
@@ -342,37 +336,12 @@ public class newBeak {
         };
     }
 
-    public Action autonSliderExtend(){
-        return packet -> {
-            MoveSlider(PARAMS.sliderMaxPos);
-            SystemClock.sleep(1000);
-            return false;
-        };
-    }
-
-    public Action autonSliderRetract() {
-        return packet -> {
-            MoveSlider(PARAMS.sliderMinPos);
-            SystemClock.sleep(1000);
-            return false;
-        };
-    }
-
-    public Action autonSliderAuton(){
-        return packet -> {
-            MoveSlider(0.23);
-            return false;
-        };
-    }
 
     public Action autonDropSampleToHuman() {
         return packet -> {
             // Drop Sample to Human Player
             MoveBeak(PARAMS.beakOpenDropPos);
             SystemClock.sleep(PARAMS.beakClosedDelay);
-
-            MoveElbow(PARAMS.elbowStartPos);
-            SystemClock.sleep(500);
             return false;
         };
     }

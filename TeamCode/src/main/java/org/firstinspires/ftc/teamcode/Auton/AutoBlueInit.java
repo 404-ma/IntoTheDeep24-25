@@ -7,6 +7,7 @@ import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.TurnConstraints;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.acmerobotics.roadrunner.ftc.Actions;
 
@@ -17,6 +18,7 @@ import org.firstinspires.ftc.teamcode.Helper.ViperSlide.ClawAction;
 import org.firstinspires.ftc.teamcode.Helper.ViperSlide.ViperAction;
 import org.firstinspires.ftc.teamcode.RoadRunner.MecanumDrive;
 
+@Disabled
 @Autonomous(name = "AutoBlueInit", group = "RoadRunner")
 public class AutoBlueInit extends LinearOpMode {
 

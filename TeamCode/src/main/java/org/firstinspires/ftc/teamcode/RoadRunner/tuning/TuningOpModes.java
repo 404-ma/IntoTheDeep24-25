@@ -35,7 +35,7 @@ import java.util.List;
 public final class TuningOpModes {
     public static final Class<?> DRIVE_CLASS = MecanumDrive.class;
 
-    public static final boolean DISABLED = false;   // Disable Tuning when Not it Use
+    public static final boolean DISABLED = true;   // Disable Tuning when Not it Use
 
     private TuningOpModes() {}
 
