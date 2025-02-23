@@ -24,7 +24,7 @@ public class AutoBlueOB extends LinearOpMode {
 
     public static class Params {
         public boolean easy = false;
-        public String version = "15.8";
+        public String version = "15.10";
         public double y = 38.4;
     }
 
