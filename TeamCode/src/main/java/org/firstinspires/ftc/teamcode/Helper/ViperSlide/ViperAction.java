@@ -193,7 +193,7 @@ public class ViperAction {
             return false;
         };
     }
-
+//10
     public Action perfClawDropOnSubBasket () {
         return packet -> {
             perfPlaceOnSubBasket();

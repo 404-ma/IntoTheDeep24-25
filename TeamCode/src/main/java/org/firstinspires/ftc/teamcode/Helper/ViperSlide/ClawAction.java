@@ -55,7 +55,7 @@ public class ClawAction {
             OpenGrip();
     }
 
-    /*
+    /*9
      * Autonomous Claw Movements
      */
     public Action placeOnSub () {
