@@ -301,13 +301,8 @@ public class newBeak {
 
     public Action autonReachOB() {
         return packet -> {
-            MoveElbow(PARAMS.elbowPickPos);
-
-            MoveBeak(PARAMS.beakOpenDropPos);
-            SystemClock.sleep(PARAMS.beakPickUpDelay);
             MoveBeak(PARAMS.beakWideOpen + 0.045);
-
-            SystemClock.sleep(500);
+            MoveElbow(PARAMS.elbowPickPos);
             return false;
         };
     }
