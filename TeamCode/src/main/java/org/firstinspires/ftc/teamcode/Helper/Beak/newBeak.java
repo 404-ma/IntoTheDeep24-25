@@ -279,9 +279,9 @@ public class newBeak {
     public Action autonReachSampThird() {
         return packet -> {
             openWideBeak();
-            MoveElbow(PARAMS.elbowPickPos);
-            SystemClock.sleep(850);
             MoveSlider(0.30);
+            SystemClock.sleep(859);
+            MoveElbow(PARAMS.elbowPickPos);
             SystemClock.sleep(800);
             closedBeak();
             SystemClock.sleep(PARAMS.beakClosedDelay);
