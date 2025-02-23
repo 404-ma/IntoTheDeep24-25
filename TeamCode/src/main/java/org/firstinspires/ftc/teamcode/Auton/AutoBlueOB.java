@@ -145,7 +145,7 @@ public class AutoBlueOB extends LinearOpMode {
     public void FirstGo(){
         Action move = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .splineToSplineHeading(new Pose2d(-29, -3, Math.toRadians(0)), Math.toRadians(-180))
+                .splineToSplineHeading(new Pose2d(-29.5, -3, Math.toRadians(0)), Math.toRadians(-180))
                 .build();
         Actions.runBlocking(new SequentialAction(move, Viper.perfClawDropOnSub(), Claw.placeOnSub()));
     }
@@ -154,7 +154,7 @@ public class AutoBlueOB extends LinearOpMode {
         Action move2 = drive.actionBuilder(drive.pose)
                 .setReversed(true)
                 .lineToX(-24)
-                .splineToSplineHeading(new Pose2d(2.5, 28, Math.toRadians(-180)), Math.toRadians(0))
+                .splineToSplineHeading(new Pose2d(2.5, 27, Math.toRadians(-180)), Math.toRadians(0))
                 .build();
         Actions.runBlocking(new SequentialAction(new ParallelAction(move2, Viper.clawHumanGrab()), Claw.grabFromHuman(), Viper.fast_perfBeforeDropOff()));
     }
