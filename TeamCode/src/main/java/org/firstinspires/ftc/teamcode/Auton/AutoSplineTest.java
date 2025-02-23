@@ -28,14 +28,10 @@ public class AutoSplineTest extends LinearOpMode {
 
     public static Params PARAMS = new Params();
 
-    private MecanumDrive drive;
-    private LEDColorHelper BobColor;
-    private newBeak beak;
-
     public void runOpMode(){
-        drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
-        beak = new newBeak(hardwareMap);
-        BobColor = new LEDColorHelper(hardwareMap);
+        MecanumDrive drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
+        newBeak beak = new newBeak(hardwareMap);
+        LEDColorHelper BobColor = new LEDColorHelper(hardwareMap);
 
         waitForStart();
 
