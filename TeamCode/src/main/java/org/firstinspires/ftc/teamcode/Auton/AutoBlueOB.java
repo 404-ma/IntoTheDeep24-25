@@ -70,18 +70,8 @@ public class AutoBlueOB extends LinearOpMode {
             turningOnOne();
 
             turningToTwo();
-            /*markOne();
-            humanPlayer();
-            Grabbing2();
-            //Grabbing3();
-            HumanToOB();
-             */
-            GoBack();
-            Reverse();
-            backToLine();
-            moveBack();
+            FirstGo();
             backAndForth();
-
 
             //forward();
             //toParkLast();
@@ -159,7 +149,24 @@ public class AutoBlueOB extends LinearOpMode {
         Actions.runBlocking(new SequentialAction(Beak.autonDropToHuman(), Claw.grabFromHuman(), new ParallelAction(Viper.fast_perfBeforeDropOff(), Bucket.autonBucketDown())));
     }
 
-//                 .splineTo(new Vector2d(PARAMS.lastMoveX, PARAMS.lastMoveY), Math.toRadians(PARAMS.LastHeading))
+    public void FirstGo(){
+        Action move = drive.actionBuilder(drive.pose)
+                .setReversed(false)
+                .splineToSplineHeading(new Pose2d(-29, -5, Math.toRadians(180)), Math.toRadians(0))
+                .build();
+        Actions.runBlocking(new SequentialAction(move, Claw.placeOnSub()));
+    }
+
+    public void backAndForth(){
+        Action move2 = drive.actionBuilder(drive.pose)
+                .setReversed(true)
+                .lineToX(-24)
+                .splineToSplineHeading(new Pose2d(1, 28, Math.toRadians(0)), Math.toRadians(180))
+                .build();
+        Actions.runBlocking(new SequentialAction(new ParallelAction(move2, Viper.clawHumanGrab())));
+    }
+
+//                 .splineTo(new Vector2d(PARAMS.lastMoveX, PARAMS.lastMoveY), Math.toRadians(PARAMS.LastHeading)
 
     public void markOne(){
         //move to mark
@@ -235,14 +242,6 @@ public class AutoBlueOB extends LinearOpMode {
                 .splineTo(new Vector2d(-29, -5), Math.toRadians(180))
                 .build();
         Actions.runBlocking(new SequentialAction(backAgain, Viper.perfClawDropOnSub(), Claw.placeOnSub()));
-    }
-
-    public void backAndForth(){
-        Action clawToOB = drive.actionBuilder(drive.pose)
-                .setReversed(false)
-                .splineTo(new Vector2d(-1, 37), Math.toRadians(70))
-                .build();
-        Actions.runBlocking(new SequentialAction(clawToOB, Claw.grabFromHuman(), Viper.perfBeforeDropOff()));
     }
 
     private void toParkLast(){
