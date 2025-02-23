@@ -24,12 +24,8 @@ public class AutoBlueOB extends LinearOpMode {
 
     public static class Params {
         public boolean easy = false;
-        public String version = "15.6";
+        public String version = "15.7";
         public double y = 38.4;
-        public double lastMoveX = -15;
-        public double lastMoveY = 31;
-        public double LastHeading = 35;
-
     }
 
     public static Params PARAMS = new Params();
@@ -117,7 +113,7 @@ public class AutoBlueOB extends LinearOpMode {
     public void turningOnOne(){
         Action Simple = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .splineTo(new Vector2d(PARAMS.lastMoveX, PARAMS.lastMoveY), Math.toRadians(PARAMS.LastHeading))
+                .splineTo(new Vector2d(-15, 31), Math.toRadians(35))
                 .build();
         Actions.runBlocking(new SequentialAction(Simple, Beak.autonDropSampleToHuman()));
     }
