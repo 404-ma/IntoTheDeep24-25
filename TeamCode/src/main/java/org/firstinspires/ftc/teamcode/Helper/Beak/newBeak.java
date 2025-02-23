@@ -274,6 +274,25 @@ public class newBeak {
         };
     }
 
+    public Action autonReachSampThird() {
+        return packet -> {
+            openBeak();
+            MoveElbow(PARAMS.elbowPickPos);
+            SystemClock.sleep(850);
+            MoveSlider(0.23);
+            SystemClock.sleep(500);
+            closedBeak();
+            SystemClock.sleep(PARAMS.beakClosedDelay);
+            MoveSlider(PARAMS.sliderMinPos);
+            MoveElbow(PARAMS.elbowSuplexBucketPos);
+            SystemClock.sleep( PARAMS.suplexBucketOpenBeakDelay);
+            openBeak();
+            SystemClock.sleep( 640);
+            ElbStart();
+            return false;
+        };
+    }
+
     public Action autonReachOB() {
         return packet -> {
             MoveElbow(PARAMS.elbowPickPos);
@@ -329,6 +348,13 @@ public class newBeak {
         return packet -> {
             MoveSlider(PARAMS.sliderMinPos);
             SystemClock.sleep(1000);
+            return false;
+        };
+    }
+
+    public Action autonSliderAuton(){
+        return packet -> {
+            MoveSlider(0.23);
             return false;
         };
     }
