@@ -5,8 +5,6 @@ import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
-import com.acmerobotics.roadrunner.TurnConstraints;
-import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.acmerobotics.roadrunner.ftc.Actions;
@@ -24,7 +22,7 @@ public class AutoBlueOB extends LinearOpMode {
 
     public static class Params {
         public boolean easy = false;
-        public String version = "15.5";
+        public String version = "15.6";
         public double y = 38.4;
         public double lastMoveX = -15;
         public double lastMoveY = 31;
@@ -74,6 +72,7 @@ public class AutoBlueOB extends LinearOpMode {
             FirstGo();
             backAndForth();
             FirstGo();
+            BobColor.setLEDColor(LEDColorHelper.LEDColor.ORANGE);
             backAndForth();
         }
     }
@@ -119,21 +118,6 @@ public class AutoBlueOB extends LinearOpMode {
                 .splineTo(new Vector2d(PARAMS.lastMoveX, PARAMS.lastMoveY), Math.toRadians(PARAMS.LastHeading))
                 .build();
         Actions.runBlocking(new SequentialAction(Simple, Beak.autonDropSampleToHuman()));
-
-        // Large Part of Move
-//        Action Turning = drive.actionBuilder(drive.pose)
-//                .setReversed(true)
-//                .turnTo(Math.toRadians(35))
-//                .splineToConstantHeading(new Vector2d(-14, 32), Math.toRadians(35))
-//                .build();
-//        Actions.runBlocking(Turning);
-
-        // Last Bit and Sample Drop
-//        Action Drop = drive.actionBuilder(drive.pose)
-//                .setReversed(true)
-//                .splineToConstantHeading(new Vector2d(-17, 32), Math.toRadians(35))
-//                .build();
-//        Actions.runBlocking(new ParallelAction(Drop, Beak.autonDropSampleToHuman()));
     }
 
     public void turningToTwo() {
