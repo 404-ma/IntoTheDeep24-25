@@ -126,7 +126,7 @@ public class AutoBlueOB extends LinearOpMode {
         // Last Bit and Sample Drop
         Action Drop = drive.actionBuilder(drive.pose)
                 .setReversed(true)
-                .splineToConstantHeading(new Vector2d(-17, 33), Math.toRadians(35))
+                .splineToConstantHeading(new Vector2d(-17, 32), Math.toRadians(35))
                 .build();
         Actions.runBlocking(new ParallelAction(Drop, Beak.autonDropSampleToHuman()));
     }
@@ -152,7 +152,7 @@ public class AutoBlueOB extends LinearOpMode {
     public void FirstGo(){
         Action move = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .splineToSplineHeading(new Pose2d(-29, -5, Math.toRadians(180)), Math.toRadians(0))
+                .splineToSplineHeading(new Pose2d(-27, -5, Math.toRadians(180)), Math.toRadians(0))
                 .build();
         Actions.runBlocking(new SequentialAction(move, Claw.placeOnSub()));
     }
