@@ -262,7 +262,10 @@ public class newBeak {
 
     public Action autonReachSamp() {
         return packet -> {
-            openBeak();
+            MoveBeak(PARAMS.beakOpenDropPos);
+            SystemClock.sleep(PARAMS.beakPickUpDelay);
+            MoveBeak(PARAMS.beakWideOpen + 0.03);
+
             MoveElbow(PARAMS.elbowPickPos);
             SystemClock.sleep(850);
             closedBeak();
@@ -278,7 +281,10 @@ public class newBeak {
 
     public Action autonReachSampThird() {
         return packet -> {
-            openWideBeak();
+            MoveBeak(PARAMS.beakOpenDropPos);
+            SystemClock.sleep(PARAMS.beakPickUpDelay);
+            MoveBeak(PARAMS.beakWideOpen + 0.03);
+
             MoveSlider(0.30);
             SystemClock.sleep(859);
             MoveElbow(PARAMS.elbowPickPos);
