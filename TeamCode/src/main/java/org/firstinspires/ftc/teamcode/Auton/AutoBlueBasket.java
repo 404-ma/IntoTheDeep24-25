@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Helper.Beak.newBeak;
+import org.firstinspires.ftc.teamcode.Helper.LEDColorHelper;
 import org.firstinspires.ftc.teamcode.RoadRunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.Helper.ViperSlide.ViperAction;
 import org.firstinspires.ftc.teamcode.Helper.ViperSlide.BucketAction;
@@ -33,6 +34,7 @@ public class AutoBlueBasket extends LinearOpMode {
     private ViperAction vip;
     private BucketAction bucket;
     private ClawAction claw;
+    private LEDColorHelper amazingColor;
     @Override
     public void runOpMode(){
 
@@ -42,6 +44,7 @@ public class AutoBlueBasket extends LinearOpMode {
         vip = new ViperAction(hardwareMap);
         bucket = new BucketAction(hardwareMap);
         claw = new ClawAction(hardwareMap);
+        amazingColor = new LEDColorHelper(hardwareMap);
 
         //Load Introduction and Wait for Start
         telemetry.setDisplayFormat(Telemetry.DisplayFormat.CLASSIC);
@@ -51,6 +54,9 @@ public class AutoBlueBasket extends LinearOpMode {
         telemetry.addLine();
         telemetry.update();
         waitForStart();
+
+        amazingColor.setLEDColor(LEDColorHelper.LEDColor.GREEN);
+
         telemetry.clear();
             toSub();
             toNewPosOne();
