@@ -137,7 +137,7 @@ public class AutoBlueOB extends LinearOpMode {
     public void ThirdGrab(){
         Action third = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .splineToSplineHeading(new Pose2d(-30, -3, Math.toRadians(0)), Math.toRadians(-180))
+                .splineToSplineHeading(new Pose2d(-30.5, -3, Math.toRadians(0)), Math.toRadians(-180))
                 .build();
         Actions.runBlocking(new SequentialAction(third,  Viper.perfClawDropOnSub(), Claw.placeOnSub()));
     }
