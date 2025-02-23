@@ -24,11 +24,11 @@ public class AutoBlueOB extends LinearOpMode {
 
     public static class Params {
         public boolean easy = false;
-        public String version = "15.2";
+        public String version = "15.5";
         public double y = 38.4;
-        public double lastMoveX = -11;
-        public double lastMoveY = 30;
-        public double LastHeading = 0;
+        public double lastMoveX = -15;
+        public double lastMoveY = 31;
+        public double LastHeading = 35;
 
     }
 
@@ -49,10 +49,10 @@ public class AutoBlueOB extends LinearOpMode {
         Bucket = new BucketAction(hardwareMap);
         BobColor = new LEDColorHelper(hardwareMap);
 
-        waitForStart();
-
         telemetry.addData(PARAMS.version, "Drive OB Version" );
         telemetry.update();
+
+        waitForStart();
 
         BobColor.setLEDColor(LEDColorHelper.LEDColor.GREEN);
         Claw.CloseGrip();
@@ -66,9 +66,10 @@ public class AutoBlueOB extends LinearOpMode {
             moveBack();
             goMarkOne();
             forwardOnOne();
+            BobColor.setLEDColor(LEDColorHelper.LEDColor.ORANGE);
             turningOnOne();
             turningToTwo();
-            BobColor.setLEDColor(LEDColorHelper.LEDColor.ORANGE);
+
             updateTelemetry(drive.pose);
             sleep(1000);
             FirstGo();
@@ -103,7 +104,7 @@ public class AutoBlueOB extends LinearOpMode {
     public void goMarkOne(){
         Action lineM1 = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .splineTo(new Vector2d(-26.5, 20.3), Math.toRadians(130))
+                .splineTo(new Vector2d(-26.5, 21), Math.toRadians(130))
                 .build();
         Actions.runBlocking(lineM1);
     }
@@ -111,26 +112,32 @@ public class AutoBlueOB extends LinearOpMode {
     public void forwardOnOne(){
         Action MoreOne = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .splineToConstantHeading(new Vector2d(-27.3, 21.5), Math.toRadians(130))
+                .splineToConstantHeading(new Vector2d(-27.1, 22.0), Math.toRadians(130))
                 .build();
         Actions.runBlocking(new ParallelAction(MoreOne, Beak.autonPickupOB()));
     }
 
     public void turningOnOne(){
-        // Large Part of Move
-        Action Turning = drive.actionBuilder(drive.pose)
-                .setReversed(true)
-                .turnTo(Math.toRadians(35))
-                .splineToConstantHeading(new Vector2d(-14, 32), Math.toRadians(35))
+        Action Simple = drive.actionBuilder(drive.pose)
+                .setReversed(false)
+                .splineTo(new Vector2d(PARAMS.lastMoveX, PARAMS.lastMoveY), Math.toRadians(PARAMS.LastHeading))
                 .build();
-        Actions.runBlocking(Turning);
+        Actions.runBlocking(new SequentialAction(Simple, Beak.autonDropSampleToHuman()));
+
+        // Large Part of Move
+//        Action Turning = drive.actionBuilder(drive.pose)
+//                .setReversed(true)
+//                .turnTo(Math.toRadians(35))
+//                .splineToConstantHeading(new Vector2d(-14, 32), Math.toRadians(35))
+//                .build();
+//        Actions.runBlocking(Turning);
 
         // Last Bit and Sample Drop
-        Action Drop = drive.actionBuilder(drive.pose)
-                .setReversed(true)
-                .splineToConstantHeading(new Vector2d(-17, 32), Math.toRadians(35))
-                .build();
-        Actions.runBlocking(new ParallelAction(Drop, Beak.autonDropSampleToHuman()));
+//        Action Drop = drive.actionBuilder(drive.pose)
+//                .setReversed(true)
+//                .splineToConstantHeading(new Vector2d(-17, 32), Math.toRadians(35))
+//                .build();
+//        Actions.runBlocking(new ParallelAction(Drop, Beak.autonDropSampleToHuman()));
     }
 
     public void turningToTwo() {
@@ -167,8 +174,6 @@ public class AutoBlueOB extends LinearOpMode {
                 .build();
         Actions.runBlocking(new SequentialAction(new ParallelAction(move2, Viper.clawHumanGrab()), Claw.grabFromHuman()));
     }
-
-//                 .splineTo(new Vector2d(PARAMS.lastMoveX, PARAMS.lastMoveY), Math.toRadians(PARAMS.LastHeading)
 
     public void markOne(){
         //move to mark

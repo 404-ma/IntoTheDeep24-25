@@ -320,12 +320,11 @@ public class newBeak {
             SystemClock.sleep(PARAMS.beakPickUpDelay);
             MoveBeak(PARAMS.beakWideOpen + 0.03);
 
-
             SystemClock.sleep(500);
             closedBeak();
             SystemClock.sleep(PARAMS.beakClosedDelay);
 
-            MoveElbow(PARAMS.elbowReachPos + 0.05);
+            MoveElbow(PARAMS.elbowReachPos);
             return false;
         };
     }
@@ -370,9 +369,6 @@ public class newBeak {
             // Drop Sample to Human Player
             MoveBeak(PARAMS.beakOpenDropPos);
             SystemClock.sleep(PARAMS.beakClosedDelay);
-
-            MoveElbow(PARAMS.elbowStartPos);
-            SystemClock.sleep(500);
             return false;
         };
     }
