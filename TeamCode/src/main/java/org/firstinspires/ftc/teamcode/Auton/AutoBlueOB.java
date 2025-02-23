@@ -136,7 +136,7 @@ public class AutoBlueOB extends LinearOpMode {
         Action Pickup = drive.actionBuilder(drive.pose)
                 .setReversed(false)
                 .turnTo(Math.toRadians(136))
-                .splineToConstantHeading(new Vector2d(-28, 33.5), Math.toRadians(136))
+                .splineToConstantHeading(new Vector2d(-28, 33.8), Math.toRadians(136))
                 .build();
         Actions.runBlocking(new SequentialAction(Pickup, Beak.autonReachOB()));
 
