@@ -105,7 +105,7 @@ public class AutoBlueOB extends LinearOpMode {
     public void forwardOnOne(){
         Action MoreOne = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .splineToConstantHeading(new Vector2d(-27.1, 22.0), Math.toRadians(130))
+                .splineToConstantHeading(new Vector2d(-27.1, 22.5), Math.toRadians(130))
                 .build();
         Actions.runBlocking(new ParallelAction(MoreOne, Beak.autonPickupOB()));
     }
@@ -123,7 +123,7 @@ public class AutoBlueOB extends LinearOpMode {
         Action Pickup = drive.actionBuilder(drive.pose)
                 .setReversed(false)
                 .turnTo(Math.toRadians(136))
-                .splineToConstantHeading(new Vector2d(-28, 33.3), Math.toRadians(136))
+                .splineToConstantHeading(new Vector2d(-28, 33.9), Math.toRadians(136))
                 .build();
         Actions.runBlocking(new SequentialAction(Pickup, Beak.autonReachOB()));
 
@@ -139,7 +139,7 @@ public class AutoBlueOB extends LinearOpMode {
     public void ThirdGrab(){
         Action third = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .splineToSplineHeading(new Pose2d(-29, -3, Math.toRadians(0)), Math.toRadians(-180))
+                .splineToSplineHeading(new Pose2d(-29.5, -3, Math.toRadians(0)), Math.toRadians(-180))
                 .build();
         Actions.runBlocking(new SequentialAction(new ParallelAction(third, Viper.fast_perfBeforeDropOff()), Claw.placeOnSub()));
     }
