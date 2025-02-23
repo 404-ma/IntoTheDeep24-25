@@ -73,6 +73,7 @@ public class AutoBlueOB extends LinearOpMode {
             sleep(1000);
             FirstGo();
             backAndForth();
+            FirstGo();
 
             //forward();
             //toParkLast();
@@ -164,7 +165,7 @@ public class AutoBlueOB extends LinearOpMode {
                 .lineToX(-24)
                 .splineToSplineHeading(new Pose2d(3.5, 28, Math.toRadians(-180)), Math.toRadians(0))
                 .build();
-        Actions.runBlocking(new SequentialAction(new ParallelAction(move2, Viper.clawHumanGrab())));
+        Actions.runBlocking(new SequentialAction(new ParallelAction(move2, Viper.clawHumanGrab()), Claw.grabFromHuman()));
     }
 
 //                 .splineTo(new Vector2d(PARAMS.lastMoveX, PARAMS.lastMoveY), Math.toRadians(PARAMS.LastHeading)
