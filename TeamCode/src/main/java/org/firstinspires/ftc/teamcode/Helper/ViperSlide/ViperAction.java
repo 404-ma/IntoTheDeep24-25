@@ -26,6 +26,7 @@ public class ViperAction {
         public double clawLowHang = 0;
         public double clawHigh = 1850;
         public double clawHighHang = 1400;
+        public double clawHighHangBasket = 1350;
         public double clawWall = 14;
 
         public double delayMoveLowBasket = 1000 ;    //ms To Wait for Dump
@@ -152,7 +153,11 @@ public class ViperAction {
     public void placeOnSub () {PARAMS.hang = true; moveToPositionAuton((int) PARAMS.clawLowHang);}
     public void clawHuman () {PARAMS.hang = true; moveToPositionAuton((int) PARAMS.clawWall);}
     public void perfMoveForSub () {PARAMS.hang = true; moveToPositionAuton((int) PARAMS.clawHigh);}
-    public void perfPlaceOnSub () {PARAMS.hang = true; moveToPositionAuton((int) PARAMS.clawHighHang);}
+    public void perfPlaceOnSub () {
+        PARAMS.hang = true; moveToPositionAuton((int) PARAMS.clawHighHang);}
+
+    public void perfPlaceOnSubBasket () {
+        PARAMS.hang = true; moveToPositionAuton((int) PARAMS.clawHighHangBasket);}
 
     /*
     Claw + Viper Auto
@@ -184,6 +189,14 @@ public class ViperAction {
     public Action perfClawDropOnSub () {
         return packet -> {
             perfPlaceOnSub();
+            SystemClock.sleep(900);
+            return false;
+        };
+    }
+
+    public Action perfClawDropOnSubBasket () {
+        return packet -> {
+            perfPlaceOnSubBasket();
             SystemClock.sleep(900);
             return false;
         };
