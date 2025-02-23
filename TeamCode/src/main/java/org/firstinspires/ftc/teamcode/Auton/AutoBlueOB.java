@@ -130,7 +130,7 @@ public class AutoBlueOB extends LinearOpMode {
         // Drive to Wall and Dump
         Action PickupTurn = drive.actionBuilder(drive.pose)
                 .setReversed(true)
-                .splineTo(new Vector2d(2, 28), 0)
+                .splineTo(new Vector2d(2.5, 28), 0)
                 .build();
         Actions.runBlocking(new ParallelAction(PickupTurn, Beak.autonPickupToSlide()));
         Actions.runBlocking(new SequentialAction(Beak.autonDropToHuman(), Claw.grabFromHuman(), new ParallelAction(Viper.fast_perfBeforeDropOff(), Bucket.autonBucketDown())));
@@ -139,7 +139,7 @@ public class AutoBlueOB extends LinearOpMode {
     public void ThirdGrab(){
         Action third = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .splineToSplineHeading(new Pose2d(-29.5, -3, Math.toRadians(0)), Math.toRadians(-180))
+                .splineToSplineHeading(new Pose2d(-30, -3, Math.toRadians(0)), Math.toRadians(-180))
                 .build();
         Actions.runBlocking(new SequentialAction(third,  Viper.perfClawDropOnSub(), Claw.placeOnSub()));
     }
@@ -156,7 +156,7 @@ public class AutoBlueOB extends LinearOpMode {
         Action move2 = drive.actionBuilder(drive.pose)
                 .setReversed(true)
                 .lineToX(-24)
-                .splineToSplineHeading(new Pose2d(2, 28, Math.toRadians(-180)), Math.toRadians(0))
+                .splineToSplineHeading(new Pose2d(2.5, 28, Math.toRadians(-180)), Math.toRadians(0))
                 .build();
         Actions.runBlocking(new SequentialAction(new ParallelAction(move2, Viper.clawHumanGrab()), Claw.grabFromHuman(), Viper.fast_perfBeforeDropOff()));
     }
