@@ -154,7 +154,7 @@ public class AutoBlueOB extends LinearOpMode {
     public void FirstGo(){
         Action move = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .splineToSplineHeading(new Pose2d(-20, -5, Math.toRadians(0)), Math.toRadians(-180))
+                .splineToSplineHeading(new Pose2d(-27, -3, Math.toRadians(0)), Math.toRadians(-180))
                 .build();
         Actions.runBlocking(new SequentialAction(move, Claw.placeOnSub()));
     }
