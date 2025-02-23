@@ -24,7 +24,7 @@ public class AutoBlueOB extends LinearOpMode {
 
     public static class Params {
         public boolean easy = false;
-        public String version = "15.11";
+        public String version = "15.12";
         public double y = 38.4;
     }
 
@@ -65,8 +65,6 @@ public class AutoBlueOB extends LinearOpMode {
             BobColor.setLEDColor(LEDColorHelper.LEDColor.ORANGE);
             turningOnOne();
             turningToTwo();
-
-            updateTelemetry(drive.pose);
             FirstGo();
             backAndForth();
             ThirdGrab();
