@@ -17,7 +17,8 @@ public class ViperAction {
         public int  viperHighBasketPos = 2950;  // High Basket
         public double viperLowBasketPos = 1050;   // Low Basket (Approx 38% of High Basket)
         public double viperCatchPoint = 0;        // Catch Point for Sample
-        public double viperMotorSpeed = 0.9;
+        public double viperMotorSpeed = 1.0;
+        public double viperMotorSpeedAuton = 1.5;
         public double viperMaxPos = 3000;
         public double viperPowerLimitPos = 2800;
 
@@ -25,10 +26,11 @@ public class ViperAction {
         public double clawLowHang = 0;
         public double clawHigh = 1850;
         public double clawHighHang = 1400;
+        public double clawHighHangBasket = 1350;
         public double clawWall = 14;
 
         public double delayMoveLowBasket = 1000 ;    //ms To Wait for Dump
-        public double delayMoveHighBasket = 2500;  //ms To Wait for Dump
+        public double delayMoveHighBasket = 1750;  //ms To Wait for Dump
         public double delayBucketDump = 1000;
 
         public int autonReset = 100;
@@ -59,6 +61,18 @@ public class ViperAction {
             viperMotor.setPower(PARAMS.viperMotorSpeed);
         else {
             viperMotor.setPower(0.5);
+            PARAMS.hang = false;
+        }
+        viperMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+
+    private void moveToPositionAuton(int targetPosition) {
+        viperMotor.setTargetPosition(targetPosition);
+
+        if(!PARAMS.hang)
+            viperMotor.setPower(PARAMS.viperMotorSpeedAuton);
+        else {
+            viperMotor.setPower(1);
             PARAMS.hang = false;
         }
         viperMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -95,18 +109,18 @@ public class ViperAction {
         return viperMotor.getCurrentPosition();
     }
 
-
     public void moveToHighBasket() {
         moveToPosition((int) PARAMS.viperHighBasketPos);
     }
 
+    public void moveToHighBasketAuton() {
+        moveToPositionAuton((int) PARAMS.viperHighBasketPos);
+    }
 
     public void moveToLowBasket() {
 
         moveToPosition((int) PARAMS.viperLowBasketPos);
     }
-
-
 
     /*
      * Autonomous Viper Movements
@@ -124,7 +138,7 @@ public class ViperAction {
 
     public Action dumpSampleHighBasket() {
         return packet -> {
-            moveToHighBasket();
+            moveToHighBasketAuton();
             SystemClock.sleep((long) PARAMS.delayMoveHighBasket);
             bucketAction.DumpSample();
             SystemClock.sleep((long)PARAMS.delayBucketDump);
@@ -135,11 +149,15 @@ public class ViperAction {
     /*
     Claw + Viper
      */
-    public void moveForSub () {PARAMS.hang = true; moveToPosition((int) PARAMS.clawLow);}
-    public void placeOnSub () {PARAMS.hang = true; moveToPosition((int) PARAMS.clawLowHang);}
-    public void clawHuman () {PARAMS.hang = true; moveToPosition((int) PARAMS.clawWall);}
-    public void perfMoveForSub () {PARAMS.hang = true; moveToPosition((int) PARAMS.clawHigh);}
-    public void perfPlaceOnSub () {PARAMS.hang = true; moveToPosition((int) PARAMS.clawHighHang);}
+    public void moveForSub () {PARAMS.hang = true; moveToPositionAuton((int) PARAMS.clawLow);}
+    public void placeOnSub () {PARAMS.hang = true; moveToPositionAuton((int) PARAMS.clawLowHang);}
+    public void clawHuman () {PARAMS.hang = true; moveToPositionAuton((int) PARAMS.clawWall);}
+    public void perfMoveForSub () {PARAMS.hang = true; moveToPositionAuton((int) PARAMS.clawHigh);}
+    public void perfPlaceOnSub () {
+        PARAMS.hang = true; moveToPositionAuton((int) PARAMS.clawHighHang);}
+
+    public void perfPlaceOnSubBasket () {
+        PARAMS.hang = true; moveToPositionAuton((int) PARAMS.clawHighHangBasket);}
 
     /*
     Claw + Viper Auto
@@ -156,7 +174,7 @@ public class ViperAction {
     public Action clawHumanGrab () {
         return packet -> {
             clawHuman();
-            SystemClock.sleep(250);
+            //SystemClock.sleep(250);
             return false;
         };
     }
@@ -171,7 +189,15 @@ public class ViperAction {
     public Action perfClawDropOnSub () {
         return packet -> {
             perfPlaceOnSub();
-            SystemClock.sleep(1000);
+            SystemClock.sleep(500);
+            return false;
+        };
+    }
+//10
+    public Action perfClawDropOnSubBasket () {
+        return packet -> {
+            perfPlaceOnSubBasket();
+            SystemClock.sleep(900);
             return false;
         };
     }
@@ -179,7 +205,15 @@ public class ViperAction {
     public Action perfBeforeDropOff() {
         return packet -> {
             perfMoveForSub();
-            SystemClock.sleep(1000);
+            SystemClock.sleep(300);
+            return false;
+        };
+    }
+
+    public Action fast_perfBeforeDropOff() {
+        return packet -> {
+            perfMoveForSub();
+            SystemClock.sleep(0);
             return false;
         };
     }
@@ -194,6 +228,7 @@ public class ViperAction {
     public Action autonReset(){
         return packet -> {
             moveToPosition(PARAMS.autonReset);
+            SystemClock.sleep(0);
             return false;
         };
     }

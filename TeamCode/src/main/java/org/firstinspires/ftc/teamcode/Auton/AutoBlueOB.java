@@ -1,52 +1,58 @@
 package org.firstinspires.ftc.teamcode.Auton;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
+import com.acmerobotics.roadrunner.TurnConstraints;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.acmerobotics.roadrunner.ftc.Actions;
 
 import org.firstinspires.ftc.teamcode.Helper.Beak.newBeak;
+import org.firstinspires.ftc.teamcode.Helper.LEDColorHelper;
 import org.firstinspires.ftc.teamcode.Helper.ViperSlide.BucketAction;
 import org.firstinspires.ftc.teamcode.Helper.ViperSlide.ClawAction;
 import org.firstinspires.ftc.teamcode.Helper.ViperSlide.ViperAction;
 import org.firstinspires.ftc.teamcode.RoadRunner.MecanumDrive;
 
+@Config
 @Autonomous(name = "AutoBlueOB", group = "RoadRunner")
 public class AutoBlueOB extends LinearOpMode {
 
     public static class Params {
         public boolean easy = false;
-        public double y = 38;
+        public String version = "16.0";
+        public double y = 38.4;
     }
 
     public static Params PARAMS = new Params();
     private MecanumDrive drive;
-    private ClawAction Roar;
-    private ViperAction Tiger;
-    private newBeak Paw;
-    private BucketAction Fur;
+    private ClawAction Claw;
+    private ViperAction Viper;
+    private newBeak Beak;
+    private BucketAction Bucket;
+    private LEDColorHelper BobColor;
     private double x = 0;
 
     public void runOpMode(){
-
         drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
+        Claw = new ClawAction(hardwareMap);
+        Viper = new ViperAction(hardwareMap);
+        Beak = new newBeak(hardwareMap);
+        Bucket = new BucketAction(hardwareMap);
+        BobColor = new LEDColorHelper(hardwareMap);
 
-        Roar = new ClawAction(hardwareMap);
-        Tiger = new ViperAction(hardwareMap);
-        Paw = new newBeak(hardwareMap);
-        Fur = new BucketAction(hardwareMap);
-
-        Roar.CloseGrip();
-        Paw.autonStartPos();
+        telemetry.addData(PARAMS.version, "Drive OB Version" );
+        telemetry.update();
 
         waitForStart();
 
-        telemetry.addData("okay", "so code needs to push 9");
-        telemetry.update();
+        BobColor.setLEDColor(LEDColorHelper.LEDColor.GREEN);
+        Claw.CloseGrip();
+        Beak.autonStartPos();
 
         if(PARAMS.easy){
             forward();
@@ -54,19 +60,16 @@ public class AutoBlueOB extends LinearOpMode {
         else{
             toLine();
             moveBack();
-            markOne();
-            humanPlayer();
-            Grabbing2();
-
-            //Grabbing3();
-            HumanToOB();
-            GoBack();
-            Reverse();
-            backToLine();
-            //ToHuman();
-            //forward();
-            //toParkLast();
-            updateTelemetry(drive.pose.position);
+            goMarkOne();
+            forwardOnOne();
+            BobColor.setLEDColor(LEDColorHelper.LEDColor.ORANGE);
+            turningOnOne();
+            turningToTwo();
+            FirstGo();
+            backAndForth();
+            ThirdGrab();
+            BobColor.setLEDColor(LEDColorHelper.LEDColor.ORANGE);
+            backAndForth();
         }
     }
 
@@ -76,7 +79,7 @@ public class AutoBlueOB extends LinearOpMode {
                 .setReversed(true)
                 .lineToX(-29.5)
                 .build();
-        Actions.runBlocking(new SequentialAction( (new ParallelAction(Tiger.perfBeforeDropOff(), extraMove)), Tiger.perfClawDropOnSub(), Roar.placeOnSub()));
+        Actions.runBlocking(new SequentialAction((new ParallelAction(Viper.fast_perfBeforeDropOff(), extraMove)), Viper.perfClawDropOnSub(), Claw.placeOnSub()));
 
     }
 
@@ -84,103 +87,76 @@ public class AutoBlueOB extends LinearOpMode {
         //move back a little bit
         Action moveBack = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .lineToX(-20)
+                .lineToX(-26)
                 .build();
-        Actions.runBlocking(new ParallelAction(moveBack, Tiger.clawHumanGrab(), Fur.autonHuman()));
+        Actions.runBlocking(new ParallelAction(moveBack, Viper.clawHumanGrab(), Bucket.autonHuman()));
     }
 
-    public void markOne(){
-        //move to mark
+    public void goMarkOne(){
         Action lineM1 = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .splineTo(new Vector2d(-21, 37), Math.toRadians(180))
+                .splineTo(new Vector2d(-26.5, 21), Math.toRadians(130))
                 .build();
-        Actions.runBlocking(new SequentialAction(lineM1, Paw.autonReachOB()));
+        Actions.runBlocking(lineM1);
     }
 
-    public void humanPlayer(){
-        //drop off in human player zone
-        Action Player = drive.actionBuilder(drive.pose)
-                .setReversed(true)
-                .lineToX(-5)
-                .build();
-        Actions.runBlocking(new SequentialAction(Player, Paw.autonDropToHuman()));
-    }
-
-    public void Grabbing2(){
-        //Grab from 2 mark
-        Action Grab = drive.actionBuilder(drive.pose)
+    public void forwardOnOne(){
+        Action MoreOne = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .strafeTo(new Vector2d(-13,49))
+                .splineToConstantHeading(new Vector2d(-27.1, 22.9), Math.toRadians(130))
                 .build();
-        Actions.runBlocking(new SequentialAction(Grab, Paw.grabAndDrop()));
-
+        Actions.runBlocking(new ParallelAction(MoreOne, Beak.autonPickupOB()));
     }
 
-    public void Grabbing3(){
-        //Grab from 3 mark
-        Action Grab = drive.actionBuilder(drive.pose)
+    public void turningOnOne(){
+        Action Simple = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .turnTo(-2)
+                .splineTo(new Vector2d(-15, 31), Math.toRadians(35))
                 .build();
-        Actions.runBlocking(new SequentialAction(Grab,Paw.grabAndDrop()));
-
+        Actions.runBlocking(new SequentialAction(Simple, Beak.autonDropSampleToHuman()));
     }
 
-    public void HumanToOB(){
-        //pick up hooked sample from wall
-        Action PlayerGrab = drive.actionBuilder(drive.pose)
-                .setReversed(true)
-                //.turnTo(0)
-                .lineToX(-3)
-                .build();
-        Actions.runBlocking(new SequentialAction(PlayerGrab, Paw.autonDropToHuman(), Roar.grabFromHuman(), new ParallelAction(Tiger.perfBeforeDropOff(), Fur.autonBucketDown())));
-    }
-
-    public void GoBack(){
-        //give time for human player to pick up sample
-        //move out of the zone
-        Action back = drive.actionBuilder(drive.pose)
+    public void turningToTwo() {
+        // Drive Sample Two and Pickup
+        Action Pickup = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .lineToX(-14)
+                .turnTo(Math.toRadians(136))
+                .splineToConstantHeading(new Vector2d(-27.8, 33.9), Math.toRadians(136))
                 .build();
-        Actions.runBlocking(back);
-    }
+        Actions.runBlocking(new SequentialAction(Pickup, Beak.autonReachOB()));
 
-    public void Reverse(){
-        //get ready to go to sub
-        Action turnAgain = drive.actionBuilder(drive.pose)
+        // Drive to Wall and Dump
+        Action PickupTurn = drive.actionBuilder(drive.pose)
                 .setReversed(true)
-                .turnTo(260)
+                .splineTo(new Vector2d(2.5, 28), 0)
                 .build();
-        Actions.runBlocking(turnAgain);
+        Actions.runBlocking(new ParallelAction(PickupTurn, Beak.autonPickupToSlide()));
+        Actions.runBlocking(new SequentialAction(Beak.autonDropToHuman(), Claw.grabFromHuman(), new ParallelAction(Viper.fast_perfBeforeDropOff(), Bucket.autonBucketDown())));
     }
 
-    public void backToLine(){
-        //drop sample on sub
-        Action backAgain = drive.actionBuilder(drive.pose)
-                .setReversed(true)
-                .splineTo(new Vector2d(-29, -5), Math.toRadians(180))
-                .build();
-        Actions.runBlocking(new SequentialAction(backAgain, Tiger.perfClawDropOnSub(), Roar.placeOnSub()));
-    }
-
-    public void ToHuman(){
-        Action humans = drive.actionBuilder(drive.pose)
+    public void ThirdGrab(){
+        Action third = drive.actionBuilder(drive.pose)
                 .setReversed(false)
-                .splineTo(new Vector2d(-1, 37), Math.toRadians(-180))
+                .splineToSplineHeading(new Pose2d(-31, -3, Math.toRadians(0)), Math.toRadians(-180))
                 .build();
-        Actions.runBlocking(new SequentialAction(humans, Roar.grabFromHuman(),Tiger.perfBeforeDropOff()));
+        Actions.runBlocking(new SequentialAction(third,  Viper.perfClawDropOnSub(), Claw.placeOnSub()));
     }
 
-    private void toParkLast(){
-        //final park position
-        Action moveBasket= drive.actionBuilder(drive.pose)
-                .setReversed(true)
-                // .splineTo(new Vector2d(-12, -48), Math.toRadians(-20))
-                .strafeTo(new Vector2d(-1.5,48))
+    public void FirstGo(){
+        Action move = drive.actionBuilder(drive.pose)
+                .setReversed(false)
+                .splineToSplineHeading(new Pose2d(-29.5, -3, Math.toRadians(0)), Math.toRadians(-180))
                 .build();
-        Actions.runBlocking(new SequentialAction(moveBasket, Tiger.clawHumanGrab()));
+        Actions.runBlocking(new SequentialAction(move, Viper.perfClawDropOnSub(), Claw.placeOnSub()));
+    }
+
+    public void backAndForth(){
+        Action move2 = drive.actionBuilder(drive.pose)
+                .setReversed(true)
+                .lineToX(-24)
+                .splineToSplineHeading(new Pose2d(2.5, 27, Math.toRadians(-180)), Math.toRadians(0))
+                .build();
+        Actions.runBlocking(new SequentialAction(new ParallelAction(move2, Viper.clawHumanGrab()), Claw.grabFromHuman(), Viper.fast_perfBeforeDropOff()));
     }
 
     private void forward(){
@@ -192,10 +168,12 @@ public class AutoBlueOB extends LinearOpMode {
         Actions.runBlocking(moveOut);
     }
 
-    private void updateTelemetry(Vector2d pos) {
+    private void updateTelemetry(Pose2d pos) {
+        telemetry.clear();
         telemetry.addLine("RoadRunner Auto Drive BLUE");
-        telemetry.addData("Current x Position", pos.x );
-        telemetry.addData("Current y Postion", pos.y);
+        telemetry.addData("Current x Position", pos.position.x );
+        telemetry.addData("Current y Postion", pos.position.y);
+        telemetry.addData("Current Heading", Math.toDegrees(pos.heading.imag) );
         telemetry.update();
 
     }

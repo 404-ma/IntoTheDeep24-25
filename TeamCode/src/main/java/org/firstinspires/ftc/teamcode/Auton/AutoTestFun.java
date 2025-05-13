@@ -1,83 +1,96 @@
 package org.firstinspires.ftc.teamcode.Auton;
 
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ParallelAction;
+import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.acmerobotics.roadrunner.ftc.Actions;
-
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.Helper.Beak.newBeak;
 import org.firstinspires.ftc.teamcode.Helper.ViperSlide.BucketAction;
-import org.firstinspires.ftc.teamcode.Helper.ViperSlide.ClawAction;
 import org.firstinspires.ftc.teamcode.Helper.ViperSlide.ViperAction;
+import org.firstinspires.ftc.teamcode.RoadRunner.MecanumDrive;
 
-@Autonomous(name = "AutoTestFun", group = "RoadRunner")
+@Config
+@Disabled
+@Autonomous(name = "AutoTestFun", group = "Test")
 public class AutoTestFun extends LinearOpMode {
-
     public static class Params {
-        public boolean easy = false;
+        public boolean DropOnSlide = false;
     }
+
 
     public static Params PARAMS = new Params();
-    private ClawAction Roar;
-    private ViperAction Tiger;
-    private newBeak Paw;
-    private BucketAction Fur;
 
-    public void runOpMode(){
-        Roar = new ClawAction(hardwareMap);
-        Tiger = new ViperAction(hardwareMap);
-        Paw = new newBeak(hardwareMap);
-        Fur = new BucketAction(hardwareMap);
+    private newBeak Beak;
+    private BucketAction Bucket;
+    private MecanumDrive drive;
 
-        Roar.CloseGrip();
-        Paw.autonStartPos();
+    public void runOpMode() {
+        drive = new MecanumDrive(hardwareMap, new Pose2d(0, 0, 0));
+        Beak = new newBeak(hardwareMap);
+        Bucket = new BucketAction(hardwareMap);
 
         waitForStart();
-
-        telemetry.addData("okay", "so code needs to push 7");
+        telemetry.addLine("Starting Test Sequence");
         telemetry.update();
 
-        if(PARAMS.easy){
-            forward();
+        Beak.autonStartPos();
+        if (PARAMS.DropOnSlide) {
+            Bucket.DumpSample();
         }
-        else{
-            Grabbing1();
-            Grabbing2();
-            Grabbing3();
+
+        while (opModeIsActive()) {
+            telemetry.addLine("Test Sequence Running...");
+            telemetry.update();
+
+            toLine();
+
+            /*Bucket.StartPosition();
+
+            if (!PARAMS.DropOnSlide) {
+                Beak.autonReachSamp();
+                sleep(2000);
+                Bucket.DumpSample();
+                sleep(500);
+            } else {
+                Beak.autonReachOB();
+                sleep(500);
+            }
+
+            sleep(2000);
+
+             */
+
+
         }
+
+        // Move sample down
+//        Viper.perfBeforeDropOff();
+//        sleep(500);
+//        Bucket.autonBucketDown();
+//        sleep(500);
+
+        // Drop off at human player zone
+//        Beak.autonDropToHuman();
+//        sleep(500);
+//        sleep(500);
+
+        telemetry.addLine("Test Sequence Complete");
+        telemetry.update();
     }
 
-    public void Grabbing1(){
+    public void toLine(){
+        //beginning position: ends at the sub
+        Action extraMove = drive.actionBuilder(drive.pose)
+                .setReversed(true)
+                //.splineToLinearHeading()
+                .splineToSplineHeading(new Pose2d(-1, 38, Math.toRadians(-90)), Math.toRadians(-180))
+                .build();
+        Actions.runBlocking(new SequentialAction());
 
-        Actions.runBlocking(new SequentialAction(
-                Tiger.perfBeforeDropOff(), // In-place action
-                Paw.autonReachOB()          // In-place action (grab the sample)
-        ));
-    }
-
-    public void Grabbing2(){
-
-        Actions.runBlocking(new SequentialAction(
-                Paw.grabAndDrop(),          // In-place action (grab and drop)
-                Tiger.clawHumanGrab()       // In-place action (grab from human)
-        ));
-    }
-
-    public void Grabbing3(){
-
-        Actions.runBlocking(new SequentialAction(
-                Tiger.clawHumanGrab(),      // In-place action (grab from human)
-                Fur.autonBucketDown()       // In-place action (lower the bucket)
-        ));
-    }
-
-    private void forward(){
-
-        Actions.runBlocking(new SequentialAction(
-                Tiger.perfBeforeDropOff(),
-                Fur.autonBucketDown()
-        ));
     }
 }

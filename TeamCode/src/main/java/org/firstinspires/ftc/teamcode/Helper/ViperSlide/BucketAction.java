@@ -12,8 +12,8 @@ import com.qualcomm.robotcore.hardware.Servo;
 @Config
 public class BucketAction {
     public static class Params {
-        public double bucketCatchPos = 0.99;    // Catch from Beak
-        public double bucketSampleHoldPos = 0.8; // Hold Sample While Driving
+        public double bucketCatchPos = 0.98;    // Catch from Beak
+        public double bucketSampleHoldPos = 0.84; // Hold Sample While Driving
         public double bucketDumpPos = 0.475;    // Dump to Basket
         public double bucketClimbSafePos = 0.0; // Wrap to outside of Viper Slide
         private double bucketClimbSafeDelayLimitPos = 0.75;  // Threshold for Climb Safe Delay
@@ -21,7 +21,6 @@ public class BucketAction {
     }
 
     public static Params PARAMS = new Params();
-
     public static double targetBucketPosition = -1;
     private final Servo bucketServo;
 
@@ -58,7 +57,7 @@ public class BucketAction {
     }
 
     public long ClimbDelayNeeded() {
-        boolean delayNeeded = (targetBucketPosition < PARAMS.bucketClimbSafeDelayLimitPos);
+        boolean delayNeeded = (targetBucketPosition > PARAMS.bucketClimbSafeDelayLimitPos);
         return((delayNeeded ? PARAMS.bucketClimbSafeDelay : 0));
     }
 

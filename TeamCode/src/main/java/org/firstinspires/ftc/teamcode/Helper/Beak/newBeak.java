@@ -16,9 +16,14 @@ public class newBeak {
 
     public static class Params {
         //slider
-        public double sliderMaxPos = 0.440;
-        public double sliderMinPos = 0.045;
+
+        //hi
+        public double sliderMaxPos = 0.64;
+        public double sliderMinPos = 0.21;
         public double sliderPosChange = 0.03;
+        public double sliderPosAuton = 0.090;
+        public double sliderClimbPos = 0.225;
+        public double sliderSuplexPos = 0.25;
         public double sliderRetractDelayPosition = 0.2425;
 
         //hover height is wrong
@@ -27,17 +32,21 @@ public class newBeak {
         //beak
         public double beakOpenDropPos = 0.62; //for suplex
         public double beakOpenPickupPos = 0.63; //for pick up
-        public double beakWideOpen = 0.66; // for wider opening
+        public double beakWideOpen = 0.67; // for wider opening
         public double beakClosePos = 0.47; // closed
 
         //elbow
-        public double elbowPickPos = 0.475;     // Pickup Off Mat
+        public double elbowPickPos = 0.479;// Pickup Off Mat
         public double elbowReachPos = 0.49;    // Grabber Extended Drive
         public double elbowSuplexBucketPos = 0.56;    // Suplex in Bucket
+        public double elbowReachPosThird = 0.479;    // Grabber Extended Drive
+
         public double elbowSuplexSlideDumpPos = 0.57; // Suplex to Slide
-        public double elbowStartPos = 0.541;    // Drive Position
-        public double elbowClimbInit = 0.541;    // Climb Start - Beak Forward
-        public double elbowClimbSafePos = 0.575; // Climb - Beak Tucked Down
+        public double elbowStartPos = 0.54;    // Drive Position
+        public double elbowClimbInit = 0.539;    // Climb Start - Beak Forward
+        public double elbowClimbSafePos = 0.585; // Climb - Beak Tucked Down
+        public double elbowIncrease = 0.02;
+        public double elbowDecrease = -0.011;
 
         //delays
         public long beakClosedDelay = 50;
@@ -45,7 +54,7 @@ public class newBeak {
         // ms Wait for Slider to Retract ot Min Pos before Suplex
         public long suplexSliderRetractDelay = 160;
         // ms Wait for Elbow Suplex to Bucket Before Opening Beak
-        public long suplexBucketOpenBeakDelay = 825;
+        public long suplexBucketOpenBeakDelay = 740;
         // ms Wait for Elbow Suplex to Slide Dump Before Opening Beak
         public long suplexSlideDumpOpenBeakDelay = 1050;
         // ms Wait for Sample to Fall in Bucket or Slide
@@ -95,12 +104,12 @@ public class newBeak {
     }
 
     public void IncreaseElbow(){
-        targetElbowPosition += 0.01;
+        targetElbowPosition += PARAMS.elbowIncrease;
         MoveElbow(targetElbowPosition);
     }
 
     public void  DecreaseElbow(){
-        targetElbowPosition -= 0.01;
+        targetElbowPosition += PARAMS.elbowDecrease;
         MoveElbow(targetElbowPosition);
     }
 
@@ -137,6 +146,7 @@ public class newBeak {
     public void PickUpElbow() {
         // Kill Any Suplex Related Deferred Actions
         DeferredActions.CancelDeferredAction(DeferredActionType.SUPLEX_BUCKET);
+        DeferredActions.CancelDeferredAction(DeferredActionType.SUPLEX_SLIDE);
         DeferredActions.CancelDeferredAction(DeferredActionType.BEAK_OPEN);
         DeferredActions.CancelDeferredAction(DeferredActionType.BEAK_DRIVE_SAFE);
         MoveElbow(PARAMS.elbowPickPos);
@@ -146,6 +156,7 @@ public class newBeak {
 
     //button back
     public void ElbStart(){
+        MoveSlider(PARAMS.sliderMinPos);
         MoveElbow(PARAMS.elbowStartPos);
         openBeak();
     }
@@ -156,10 +167,10 @@ public class newBeak {
             closedBeak();
             DeferredActions.CreateDeferredAction(PARAMS.beakClosedDelay, DeferredActionType.SUPLEX_BUCKET);
         } else if (targetSliderPosition >= PARAMS.sliderRetractDelayPosition) {
-            MoveSlider(PARAMS.sliderMinPos);
+            MoveSlider(PARAMS.sliderSuplexPos);
             DeferredActions.CreateDeferredAction(PARAMS.suplexSliderRetractDelay, DeferredActionType.SUPLEX_BUCKET);
         } else {
-            MoveSlider(PARAMS.sliderMinPos);
+            MoveSlider(PARAMS.sliderSuplexPos);
             MoveElbow(PARAMS.elbowSuplexBucketPos);
             DeferredActions.CreateDeferredAction(PARAMS.suplexBucketOpenBeakDelay, DeferredActionType.BEAK_OPEN);
             long delay = PARAMS.suplexBucketOpenBeakDelay + PARAMS.suplexMoveToDrivePositionDelay;
@@ -195,6 +206,7 @@ public class newBeak {
     public void sampleReachElbowPos() {
         // Kill Any Suplex Related Deferred Actions
         DeferredActions.CancelDeferredAction(DeferredActionType.SUPLEX_BUCKET);
+        DeferredActions.CancelDeferredAction(DeferredActionType.SUPLEX_SLIDE);
         DeferredActions.CancelDeferredAction(DeferredActionType.BEAK_OPEN);
         DeferredActions.CancelDeferredAction(DeferredActionType.BEAK_DRIVE_SAFE);
         if (targetElbowPosition > PARAMS.elbowStartPos)
@@ -215,7 +227,7 @@ public class newBeak {
 
     public long ClimbInitialize() {
         // Returns Delay Needed for Climb Initialization to Complete
-        long delay = ((targetElbowPosition > PARAMS.elbowClimbInit) ? PARAMS.climbBeakInitializeDelay : 0);
+        long delay = ((targetElbowPosition >= PARAMS.elbowClimbInit) ? PARAMS.climbBeakInitializeDelay : 0);
         closedBeak();
         MoveElbow(PARAMS.elbowClimbInit);
         return (delay);
@@ -225,7 +237,7 @@ public class newBeak {
 
     public void ClimbPositions(){
         closedBeak();
-        MoveSlider(PARAMS.sliderMinPos);
+        MoveSlider(PARAMS.sliderClimbPos);
         MoveElbow(PARAMS.elbowClimbSafePos);
     }
 
@@ -237,44 +249,107 @@ public class newBeak {
     public void autonStartPos(){
         MoveSlider(PARAMS.sliderMinPos);
         MoveElbow(PARAMS.elbowStartPos);
-        openBeak();
     }
 
+    public Action startPosAuton(){
+        return packet -> {
+            MoveSlider(PARAMS.sliderMinPos);
+            MoveElbow(PARAMS.elbowStartPos);
+            return false;
+        };
+
+    }
 
     public Action autonReachSamp() {
         return packet -> {
-            openBeak();
-            PickUpElbow();
-            SystemClock.sleep(1000);
+            MoveBeak(PARAMS.beakOpenDropPos);
+            SystemClock.sleep(PARAMS.beakPickUpDelay);
+            MoveBeak(PARAMS.beakWideOpen + 0.03);
+            MoveElbow(PARAMS.elbowPickPos);
+            SystemClock.sleep(700);
             closedBeak();
             SystemClock.sleep(PARAMS.beakClosedDelay);
             MoveElbow(PARAMS.elbowSuplexBucketPos);
             SystemClock.sleep( PARAMS.suplexBucketOpenBeakDelay);
             openBeak();
-            SystemClock.sleep( PARAMS.suplexBucketOpenBeakDelay + PARAMS.beakClosedDelay);
+            SystemClock.sleep( 640);
+            ElbStart();
+            return false;
+        };
+    }
+//123
+    public Action autonReachSampThird() {
+        return packet -> {
+            MoveBeak(PARAMS.beakOpenDropPos);
+            SystemClock.sleep(PARAMS.beakPickUpDelay);
+            MoveBeak(PARAMS.beakWideOpen + 0.03);
+            MoveSlider(0.30);
+            SystemClock.sleep(859);
+            MoveElbow(PARAMS.elbowPickPos);
+            SystemClock.sleep(750);
+            closedBeak();
+            SystemClock.sleep(PARAMS.beakClosedDelay);
+            MoveSlider(PARAMS.sliderMinPos);
+            MoveElbow(PARAMS.elbowSuplexBucketPos);
+            SystemClock.sleep( PARAMS.suplexBucketOpenBeakDelay);
+            openBeak();
+            SystemClock.sleep( 600);
             ElbStart();
             return false;
         };
     }
 
-
     public Action autonReachOB() {
         return packet -> {
-            openBeak();
-            PickUpElbow();
-            SystemClock.sleep(600);
+            MoveBeak(PARAMS.beakWideOpen + 0.045);
+            MoveElbow(PARAMS.elbowPickPos);
+            return false;
+        };
+    }
+
+    public Action autonPickupOB() {
+        return packet -> {
+            MoveElbow(PARAMS.elbowPickPos);
+
+            MoveBeak(PARAMS.beakOpenDropPos);
+            SystemClock.sleep(PARAMS.beakPickUpDelay);
+            MoveBeak(PARAMS.beakWideOpen + 0.045);
+
+            SystemClock.sleep(500);
             closedBeak();
             SystemClock.sleep(PARAMS.beakClosedDelay);
-            MoveElbow(PARAMS.elbowSuplexSlideDumpPos);
 
+            MoveElbow(PARAMS.elbowReachPos);
+            return false;
+        };
+    }
+
+    public Action autonPickupToSlide() {
+        return packet -> {
+            SystemClock.sleep(50); // Delay for Ozer - Let Robot Turn Before Beak Close
+            closedBeak();
+            SystemClock.sleep(PARAMS.beakClosedDelay);
+
+            MoveElbow(PARAMS.elbowSuplexSlideDumpPos);
+            SystemClock.sleep(PARAMS.suplexSlideDumpOpenBeakDelay);
             return false;
         };
     }
 
 
+    public Action autonDropSampleToHuman() {
+        return packet -> {
+            // Drop Sample to Human Player
+            MoveBeak(PARAMS.beakOpenDropPos);
+            SystemClock.sleep(PARAMS.beakClosedDelay);
+            return false;
+        };
+    }
+
 
     public Action autonDropToHuman() {
         return packet -> {
+            SystemClock.sleep(500);
             openBeak();
             SystemClock.sleep(200);
             ElbStart();
@@ -286,14 +361,11 @@ public class newBeak {
         return packet -> {
             MoveSlider(PARAMS.sliderMaxPos);
             SystemClock.sleep(1000);
-            PickUpElbow();
             SystemClock.sleep(600);
             closedBeak();
-            SystemClock.sleep(500);
-            MoveSlider(PARAMS.sliderMinPos);
-            SystemClock.sleep(1000);
+            SystemClock.sleep(PARAMS.beakClosedDelay);
             MoveElbow(PARAMS.elbowSuplexSlideDumpPos);
-            SystemClock.sleep(1000);
+
             return false;
         };
     }
@@ -324,7 +396,6 @@ public class newBeak {
             return false;
         };
     }
-
 
 
 
